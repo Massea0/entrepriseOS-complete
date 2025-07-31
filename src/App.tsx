@@ -14,7 +14,6 @@ const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 const TestPage = React.lazy(() => import('@/pages/TestPage'));
 const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
-const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
 
 // Query Client
 const queryClient = new QueryClient({
