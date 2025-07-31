@@ -5,8 +5,8 @@ import { supabaseMock } from './supabase-mock';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Utiliser le mock si les variables ne sont pas définies
-const USE_MOCK = !supabaseUrl || !supabaseAnonKey;
+// Forcer l'utilisation du mock pour le développement local
+const USE_MOCK = true; // Temporairement forcé à true pour éviter les erreurs de connexion
 
 if (USE_MOCK) {
   console.log('🔧 Mode développement : Utilisation du mock Supabase');
