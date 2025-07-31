@@ -1,7 +1,7 @@
-'use client';
+
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, getCurrentUser, getCurrentSession } from '@/lib/supabase';
 import { toast } from 'sonner';
@@ -23,7 +23,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check active session
@@ -49,9 +49,9 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
         setUser(currentSession?.user ?? null);
 
         if (event === 'SIGNED_IN') {
-          router.push('/dashboard');
+          navigate('/dashboard');
         } else if (event === 'SIGNED_OUT') {
-          router.push('/auth/login');
+          navigate('/auth/login');
         } else if (event === 'TOKEN_REFRESHED') {
           console.log('Token refreshed successfully');
         } else if (event === 'USER_UPDATED') {
@@ -63,11 +63,10 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     return () => {
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
     try {
-      setLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -75,31 +74,38 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
 
       if (error) throw error;
 
-      // Check if user has completed onboarding
+      setUser(data.user);
+      setSession(data.session);
+      
+      // Check if user needs onboarding
       const { data: profile } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('onboarding_completed')
-        .eq('user_id', data.user.id)
+        .eq('id', data.user.id)
         .single();
 
-      if (!profile?.onboarding_completed) {
-        router.push('/onboarding');
+      if (profile && !profile.onboarding_completed) {
+        navigate('/onboarding');
       } else {
-        router.push('/dashboard');
+        navigate('/dashboard');
       }
 
-      toast.success('Welcome back!');
+      toast.success('Connexion réussie!');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in');
+      console.error('Sign in error:', error);
+      if (error.message === 'Invalid login credentials') {
+        toast.error('Email ou mot de passe incorrect');
+      } else if (error.message === 'Email not confirmed') {
+        toast.error('Veuillez confirmer votre email avant de vous connecter');
+      } else {
+        toast.error(error.message || 'Erreur lors de la connexion');
+      }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const signUp = async (email: string, password: string, userData?: any) => {
     try {
-      setLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -111,96 +117,87 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
 
       if (error) throw error;
 
-      if (data.user) {
-        // Create user profile
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .insert({
-            user_id: data.user.id,
-            email: data.user.email,
-            full_name: userData?.full_name || '',
-            role: userData?.role || 'user',
-            onboarding_completed: false,
-          });
-
-        if (profileError) throw profileError;
+      if (data.user && data.session) {
+        // User is automatically signed in
+        setUser(data.user);
+        setSession(data.session);
+        toast.success('Compte créé avec succès!');
+        navigate('/onboarding');
+      } else {
+        // Email confirmation required
+        toast.success('Vérifiez votre email pour confirmer votre compte');
+        navigate('/auth/verify-email');
       }
-
-      toast.success('Account created! Please check your email to verify.');
-      router.push('/auth/verify-email');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create account');
+      console.error('Sign up error:', error);
+      if (error.message === 'User already registered') {
+        toast.error('Un compte existe déjà avec cet email');
+      } else {
+        toast.error(error.message || 'Erreur lors de l\'inscription');
+      }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const signOut = async () => {
     try {
-      setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
-      toast.success('Signed out successfully');
-      router.push('/auth/login');
+
+      setUser(null);
+      setSession(null);
+      navigate('/auth/login');
+      toast.success('Déconnexion réussie');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign out');
+      console.error('Sign out error:', error);
+      toast.error('Erreur lors de la déconnexion');
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const updateProfile = async (data: any) => {
+    if (!user) throw new Error('No user logged in');
+
     try {
-      if (!user) throw new Error('No user logged in');
-      
-      setLoading(true);
-      
-      // Update auth metadata
-      const { error: authError } = await supabase.auth.updateUser({
+      const { error } = await supabase
+        .from('profiles')
+        .update(data)
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Update user metadata
+      const { error: updateError } = await supabase.auth.updateUser({
         data: data,
       });
-      
-      if (authError) throw authError;
 
-      // Update user profile
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .update(data)
-        .eq('user_id', user.id);
-        
-      if (profileError) throw profileError;
-      
-      toast.success('Profile updated successfully');
+      if (updateError) throw updateError;
+
+      toast.success('Profil mis à jour avec succès');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
+      console.error('Update profile error:', error);
+      toast.error('Erreur lors de la mise à jour du profil');
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const resetPassword = async (email: string) => {
     try {
-      setLoading(true);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       });
-      
+
       if (error) throw error;
-      
-      toast.success('Password reset email sent!');
+
+      toast.success('Email de réinitialisation envoyé');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to send reset email');
+      console.error('Reset password error:', error);
+      toast.error('Erreur lors de l\'envoi de l\'email');
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     session,
     loading,
@@ -211,7 +208,11 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     resetPassword,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
