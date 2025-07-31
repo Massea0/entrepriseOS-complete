@@ -1,0 +1,79 @@
+project_id = "qlqgyrfqiflnqknbtycw"
+
+[functions.ai-business-analyzer]
+verify_jwt = false
+
+[functions.ai-financial-predictions]
+verify_jwt = false
+
+[functions.ai-intelligent-alerts]
+verify_jwt = false
+
+[functions.ai-performance-optimizer]
+verify_jwt = false
+
+[functions.ai-predictive-analytics]
+verify_jwt = false
+
+[functions.ai-recommendations-engine]
+verify_jwt = false
+
+[functions.ai-support-assistant]
+verify_jwt = false
+
+[functions.ai-work-organizer]
+verify_jwt = false
+
+[functions.ai-workflow-orchestrator]
+verify_jwt = false
+
+[functions.bulk-create-tasks]
+verify_jwt = false
+
+[functions.enhance-task]
+verify_jwt = false
+
+[functions.gdpr-compliance]
+verify_jwt = false
+
+[functions.gemini-live-voice]
+verify_jwt = false
+
+[functions.mobile-api]
+verify_jwt = false
+
+[functions.project-planner-ai]
+verify_jwt = false
+
+[functions.projects-api]
+verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false
+
+[functions.send-sms-notification]
+verify_jwt = false
+
+[functions.setup-test-data]
+verify_jwt = false
+
+[functions.smart-task-assignment]
+verify_jwt = false
+
+[functions.synapse-live-voice]
+verify_jwt = false
+
+[functions.task-assigner-ai]
+verify_jwt = false
+
+[functions.task-mermaid-generator]
+verify_jwt = false
+
+[functions.tasks-api]
+verify_jwt = false
+
+[functions.third-party-integrations]
+verify_jwt = false
+
+[functions.voice-ai-assistant]
+verify_jwt = false
