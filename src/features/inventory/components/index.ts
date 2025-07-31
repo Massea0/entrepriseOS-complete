@@ -13,3 +13,6 @@ export * from './PurchaseOrderManagement/components';
 export * from './ProductCatalog/components';
 export * from './InventoryAnalytics/components';
 export * from './LowStockAlerts/components';
+
+// Mobile components
+export * from './mobile';

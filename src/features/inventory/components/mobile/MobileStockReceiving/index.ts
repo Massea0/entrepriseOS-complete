@@ -1,0 +1,1 @@
+export { MobileStockReceiving } from './MobileStockReceiving';
