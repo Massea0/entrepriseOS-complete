@@ -40,6 +40,15 @@ import type {
   PaymentTerms,
   PurchaseOrderStatus
 } from '../types/supplier.types'
+import { supabase } from '@/lib/supabase';
+import { 
+  Product, 
+  Warehouse, 
+  StockMovement,
+  PurchaseOrder,
+  PurchaseOrderItem
+} from '../types/inventory.types';
+import { stockMovementApi, purchaseOrderApi } from '../api/inventory.api';
 
 /**
  * Inventory Service
@@ -1056,6 +1065,333 @@ export class InventoryService {
     }>()
     
     return response
+  }
+}
+
+export class InventoryService {
+  /**
+   * Transfer stock between warehouses
+   */
+  static async transferStock(params: {
+    productId: string;
+    fromWarehouseId: string;
+    toWarehouseId: string;
+    quantity: number;
+    fromPositionId?: string;
+    toPositionId?: string;
+    lotNumber?: string;
+    serialNumbers?: string[];
+    reason?: string;
+  }) {
+    const movements: Omit<StockMovement, 'id' | 'createdAt' | 'createdBy'>[] = [{
+      type: 'transfer',
+      productId: params.productId,
+      quantity: params.quantity,
+      fromWarehouseId: params.fromWarehouseId,
+      fromPositionId: params.fromPositionId,
+      toWarehouseId: params.toWarehouseId,
+      toPositionId: params.toPositionId,
+      lotNumber: params.lotNumber,
+      serialNumbers: params.serialNumbers,
+      reason: params.reason
+    }];
+
+    return stockMovementApi.create(movements);
+  }
+
+  /**
+   * Adjust stock levels (for corrections, damages, etc.)
+   */
+  static async adjustStock(params: {
+    productId: string;
+    warehouseId: string;
+    quantity: number; // positive for increase, negative for decrease
+    positionId?: string;
+    reason: string;
+    type?: 'adjustment' | 'damage' | 'theft' | 'correction';
+  }) {
+    const movements: Omit<StockMovement, 'id' | 'createdAt' | 'createdBy'>[] = [{
+      type: params.type || 'adjustment',
+      productId: params.productId,
+      quantity: Math.abs(params.quantity),
+      fromWarehouseId: params.quantity < 0 ? params.warehouseId : undefined,
+      fromPositionId: params.quantity < 0 ? params.positionId : undefined,
+      toWarehouseId: params.quantity > 0 ? params.warehouseId : undefined,
+      toPositionId: params.quantity > 0 ? params.positionId : undefined,
+      reason: params.reason
+    }];
+
+    return stockMovementApi.create(movements);
+  }
+
+  /**
+   * Perform stock count and create adjustments
+   */
+  static async performStockCount(params: {
+    counts: {
+      productId: string;
+      warehouseId: string;
+      positionId?: string;
+      countedQuantity: number;
+      expectedQuantity: number;
+    }[];
+    reason?: string;
+  }) {
+    const movements: Omit<StockMovement, 'id' | 'createdAt' | 'createdBy'>[] = [];
+
+    for (const count of params.counts) {
+      const difference = count.countedQuantity - count.expectedQuantity;
+      
+      if (difference !== 0) {
+        movements.push({
+          type: 'count',
+          productId: count.productId,
+          quantity: Math.abs(difference),
+          fromWarehouseId: difference < 0 ? count.warehouseId : undefined,
+          fromPositionId: difference < 0 ? count.positionId : undefined,
+          toWarehouseId: difference > 0 ? count.warehouseId : undefined,
+          toPositionId: difference > 0 ? count.positionId : undefined,
+          reason: params.reason || `Stock count adjustment: ${difference > 0 ? 'surplus' : 'shortage'} of ${Math.abs(difference)} units`
+        });
+      }
+    }
+
+    if (movements.length > 0) {
+      return stockMovementApi.create(movements);
+    }
+
+    return { success: true, movements: [] };
+  }
+
+  /**
+   * Create and receive a purchase order in one operation
+   */
+  static async quickReceivePurchaseOrder(params: {
+    supplierId: string;
+    warehouseId: string;
+    items: {
+      productId: string;
+      quantity: number;
+      unitPrice: number;
+      taxRate?: number;
+    }[];
+    notes?: string;
+  }) {
+    // Create purchase order
+    const order = await purchaseOrderApi.create({
+      supplierId: params.supplierId,
+      warehouseId: params.warehouseId,
+      status: 'draft',
+      orderDate: new Date(),
+      expectedDate: new Date(),
+      subtotal: 0,
+      taxAmount: 0,
+      shippingCost: 0,
+      totalAmount: 0,
+      currency: 'EUR',
+      notes: params.notes
+    });
+
+    // Add items
+    const items: Omit<PurchaseOrderItem, 'id' | 'createdAt' | 'updatedAt'>[] = params.items.map(item => ({
+      orderId: order.id,
+      productId: item.productId,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      taxRate: item.taxRate || 0,
+      discountRate: 0,
+      totalAmount: item.quantity * item.unitPrice,
+      receivedQuantity: 0
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('purchase_order_items')
+      .insert(items);
+
+    if (itemsError) throw itemsError;
+
+    // Approve order
+    await purchaseOrderApi.approve(order.id);
+
+    // Receive order
+    const receiveItems = items.map((item, index) => ({
+      itemId: `temp-${index}`, // This would be the actual item ID from the insert
+      receivedQuantity: item.quantity
+    }));
+
+    // Create stock movements
+    const movements: Omit<StockMovement, 'id' | 'createdAt' | 'createdBy'>[] = params.items.map(item => ({
+      type: 'in',
+      productId: item.productId,
+      quantity: item.quantity,
+      toWarehouseId: params.warehouseId,
+      referenceType: 'purchase_order',
+      referenceId: order.id,
+      cost: item.unitPrice,
+      reason: `Received from PO #${order.orderNumber}`
+    }));
+
+    await stockMovementApi.create(movements);
+
+    return order;
+  }
+
+  /**
+   * Calculate reorder suggestions based on current stock levels
+   */
+  static async getReorderSuggestions(warehouseId?: string) {
+    // Get products with low stock
+    const { data: lowStockProducts, error } = await supabase
+      .from('v_low_stock_products')
+      .select('*');
+
+    if (error) throw error;
+
+    // Get supplier information for each product
+    const suggestions = [];
+
+    for (const product of lowStockProducts || []) {
+      const { data: supplierProducts } = await supabase
+        .from('supplier_products')
+        .select(`
+          *,
+          supplier:suppliers(*)
+        `)
+        .eq('product_id', product.product_id)
+        .eq('is_preferred', true)
+        .single();
+
+      suggestions.push({
+        product: {
+          id: product.product_id,
+          name: product.product_name,
+          sku: product.sku
+        },
+        currentStock: product.total_stock,
+        reorderPoint: product.reorder_point,
+        suggestedQuantity: product.reorder_quantity,
+        preferredSupplier: supplierProducts?.supplier,
+        unitCost: supplierProducts?.cost || 0,
+        leadTimeDays: supplierProducts?.lead_time_days || 0,
+        urgency: product.stock_status === 'critical' ? 'high' : 'medium'
+      });
+    }
+
+    return suggestions;
+  }
+
+  /**
+   * Optimize warehouse space by suggesting product relocations
+   */
+  static async optimizeWarehouseSpace(warehouseId: string) {
+    // Get warehouse zones and their utilization
+    const { data: zones } = await supabase
+      .from('warehouse_zones')
+      .select(`
+        *,
+        positions:warehouse_positions(
+          *,
+          stock_levels:stock_levels(
+            *,
+            product:products(*)
+          )
+        )
+      `)
+      .eq('warehouse_id', warehouseId);
+
+    // Analyze space utilization and suggest optimizations
+    const suggestions = [];
+
+    for (const zone of zones || []) {
+      const utilization = zone.positions.reduce((acc: number, pos: any) => {
+        const stockVolume = pos.stock_levels.reduce((vol: number, sl: any) => {
+          return vol + (sl.quantity * (sl.product.dimensions?.volume || 1));
+        }, 0);
+        return acc + stockVolume;
+      }, 0);
+
+      const capacity = (zone.capacity as any).total || 0;
+      const utilizationRate = capacity > 0 ? (utilization / capacity) * 100 : 0;
+
+      if (utilizationRate < 30) {
+        suggestions.push({
+          type: 'underutilized',
+          zone: zone.name,
+          currentUtilization: utilizationRate,
+          recommendation: 'Consider consolidating products from other zones'
+        });
+      } else if (utilizationRate > 90) {
+        suggestions.push({
+          type: 'overutilized',
+          zone: zone.name,
+          currentUtilization: utilizationRate,
+          recommendation: 'Consider moving slow-moving items to less utilized zones'
+        });
+      }
+    }
+
+    return suggestions;
+  }
+
+  /**
+   * Generate inventory report
+   */
+  static async generateInventoryReport(params: {
+    warehouseId?: string;
+    categoryId?: string;
+    startDate?: string;
+    endDate?: string;
+  }) {
+    // Get inventory value
+    const { data: inventoryValue } = await supabase
+      .rpc('get_inventory_value', {
+        p_warehouse_id: params.warehouseId,
+        p_category: params.categoryId
+      });
+
+    // Get movement summary
+    let movementsQuery = supabase
+      .from('stock_movements')
+      .select('type, quantity, cost');
+
+    if (params.warehouseId) {
+      movementsQuery = movementsQuery.or(
+        `from_warehouse_id.eq.${params.warehouseId},to_warehouse_id.eq.${params.warehouseId}`
+      );
+    }
+    if (params.startDate) {
+      movementsQuery = movementsQuery.gte('created_at', params.startDate);
+    }
+    if (params.endDate) {
+      movementsQuery = movementsQuery.lte('created_at', params.endDate);
+    }
+
+    const { data: movements } = await movementsQuery;
+
+    // Calculate movement statistics
+    const movementStats = movements?.reduce((acc: any, mov: any) => {
+      if (!acc[mov.type]) {
+        acc[mov.type] = { count: 0, quantity: 0, value: 0 };
+      }
+      acc[mov.type].count++;
+      acc[mov.type].quantity += mov.quantity;
+      acc[mov.type].value += (mov.quantity * (mov.cost || 0));
+      return acc;
+    }, {});
+
+    // Get top products by value
+    const { data: topProducts } = await supabase
+      .from('v_product_stock_summary')
+      .select('*')
+      .order('total_stock * unit_price', { ascending: false })
+      .limit(10);
+
+    return {
+      summary: inventoryValue,
+      movements: movementStats,
+      topProducts,
+      generatedAt: new Date()
+    };
   }
 }
 
