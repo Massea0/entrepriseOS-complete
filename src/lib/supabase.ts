@@ -1,10 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
+import { supabaseMock } from './supabase-mock';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL!;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY!;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+// Utiliser le mock si les variables ne sont pas définies ou en cas d'erreur réseau
+const USE_MOCK = !supabaseUrl || !supabaseAnonKey || import.meta.env.DEV;
+
+if (USE_MOCK) {
+  console.log('🔧 Mode développement : Utilisation du mock Supabase');
+  console.log('📧 Compte de démonstration : demo@entrepriseos.com / DemoPass123!');
+}
+
+export const supabase = USE_MOCK ? supabaseMock as any : createClient<Database>(supabaseUrl!, supabaseAnonKey!, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
