@@ -6,6 +6,7 @@ import { useAuth } from '@/providers/supabase-auth-provider';
 // Pages - on va les créer progressivement
 const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
+const TestPage = React.lazy(() => import('@/pages/TestPage'));
 
 // Placeholder pour les autres pages
 const ComingSoon = ({ title }: { title: string }) => (
@@ -43,6 +44,7 @@ export function App() {
       >
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/test" element={<TestPage />} />
           
           <Route
             path="/*"
