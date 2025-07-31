@@ -14,6 +14,7 @@ const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 const TestPage = React.lazy(() => import('@/pages/TestPage'));
 const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
+const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
 
 // Query Client
 const queryClient = new QueryClient({
@@ -74,7 +75,7 @@ export function App() {
                       <AppLayout>
                         <Routes>
                           <Route path="/" element={<DashboardPage />} />
-                          <Route path="/hr" element={<ComingSoon title="Module HR" />} />
+                                                            <Route path="/hr" element={<HRDashboard />} />
                           <Route path="/crm" element={<ComingSoon title="Module CRM" />} />
                           <Route path="/finance" element={<ComingSoon title="Module Finance" />} />
                           <Route path="/projects" element={<ComingSoon title="Module Projets" />} />
