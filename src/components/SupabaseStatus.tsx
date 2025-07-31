@@ -15,8 +15,8 @@ export function SupabaseStatus() {
   const checkConnection = async () => {
     try {
       // Vérifier les variables d'environnement
-      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const url = import.meta.env.VITE_SUPABASE_URL;
+      const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
       setDetails({
         url: url ? `${url.substring(0, 30)}...` : 'Non définie',
