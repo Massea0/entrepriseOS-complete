@@ -10,7 +10,12 @@ const USE_MOCK = !supabaseUrl || !supabaseAnonKey || import.meta.env.DEV;
 
 if (USE_MOCK) {
   console.log('🔧 Mode développement : Utilisation du mock Supabase');
-  console.log('📧 Compte de démonstration : demo@entrepriseos.com / DemoPass123!');
+  console.log('📧 Comptes disponibles :');
+  console.log('   • demo@entrepriseos.com / DemoPass123! (Employé)');
+  console.log('   • admin@entrepriseos.com / AdminPass123! (Admin)');
+  console.log('   • manager@entrepriseos.com / ManagerPass123! (Manager)');
+  console.log('   • hr@entrepriseos.com / HRPass123! (RH)');
+  console.log('   • finance@entrepriseos.com / FinancePass123! (Finance)');
 }
 
 export const supabase = USE_MOCK ? supabaseMock as any : createClient<Database>(supabaseUrl!, supabaseAnonKey!, {

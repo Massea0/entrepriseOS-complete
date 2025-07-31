@@ -7,14 +7,28 @@ let mockSession: any = null;
 export const supabaseMock = {
   auth: {
     signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
-      // Simuler une connexion réussie
-      if (email === 'demo@entrepriseos.com' && password === 'DemoPass123!') {
+      // Base de données des utilisateurs test
+      const testUsers: Record<string, { password: string; role: string; firstName: string; lastName: string }> = {
+        'demo@entrepriseos.com': { password: 'DemoPass123!', role: 'employee', firstName: 'Demo', lastName: 'User' },
+        'admin@entrepriseos.com': { password: 'AdminPass123!', role: 'admin', firstName: 'Admin', lastName: 'Système' },
+        'manager@entrepriseos.com': { password: 'ManagerPass123!', role: 'manager', firstName: 'Marie', lastName: 'Manager' },
+        'employee@entrepriseos.com': { password: 'EmployeePass123!', role: 'employee', firstName: 'Jean', lastName: 'Employé' },
+        'hr@entrepriseos.com': { password: 'HRPass123!', role: 'hr_manager', firstName: 'Sophie', lastName: 'RH' },
+        'finance@entrepriseos.com': { password: 'FinancePass123!', role: 'finance_manager', firstName: 'Pierre', lastName: 'Finance' },
+      };
+
+      const user = testUsers[email];
+      if (user && user.password === password) {
         mockUser = {
-          id: 'mock-user-id',
-          email: 'demo@entrepriseos.com',
+          id: `mock-user-${email.split('@')[0]}`,
+          email,
           role: 'authenticated',
-          app_metadata: {},
-          user_metadata: {},
+          app_metadata: { role: user.role },
+          user_metadata: { 
+            first_name: user.firstName, 
+            last_name: user.lastName,
+            role: user.role 
+          },
           aud: 'authenticated',
           created_at: new Date().toISOString(),
         };
