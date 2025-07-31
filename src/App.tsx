@@ -13,7 +13,14 @@ import { AppStatus } from '@/components/AppStatus';
 const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 const TestPage = React.lazy(() => import('@/pages/TestPage'));
+
+// Modules
 const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
+const CRMDashboard = React.lazy(() => import('@/features/crm/pages/CRMDashboard'));
+const FinanceDashboard = React.lazy(() => import('@/features/finance/pages/FinanceDashboard'));
+const ProjectsDashboard = React.lazy(() => import('@/features/projects/pages/ProjectsDashboard'));
+const InventoryDashboard = React.lazy(() => import('@/features/inventory/pages/InventoryDashboard'));
+const AIDashboard = React.lazy(() => import('@/features/ai/pages/AIDashboard'));
 
 // Query Client
 const queryClient = new QueryClient({
@@ -75,11 +82,11 @@ export function App() {
                         <Routes>
                           <Route path="/" element={<DashboardPage />} />
                           <Route path="/hr" element={<HRDashboard />} />
-                          <Route path="/crm" element={<ComingSoon title="Module CRM" />} />
-                          <Route path="/finance" element={<ComingSoon title="Module Finance" />} />
-                          <Route path="/projects" element={<ComingSoon title="Module Projets" />} />
-                          <Route path="/inventory" element={<ComingSoon title="Module Inventaire" />} />
-                          <Route path="/ai" element={<ComingSoon title="Module IA" />} />
+                          <Route path="/crm" element={<CRMDashboard />} />
+                          <Route path="/finance" element={<FinanceDashboard />} />
+                          <Route path="/projects" element={<ProjectsDashboard />} />
+                          <Route path="/inventory" element={<InventoryDashboard />} />
+                          <Route path="/ai" element={<AIDashboard />} />
                           <Route path="/settings" element={<ComingSoon title="Paramètres" />} />
                         </Routes>
                       </AppLayout>

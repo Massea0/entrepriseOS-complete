@@ -4,6 +4,105 @@
 let mockUser: any = null;
 let mockSession: any = null;
 
+// Données mock pour les tables
+const mockData: Record<string, any[]> = {
+  companies: [
+    {
+      id: 'mock-company-id',
+      name: 'EntrepriseOS Demo',
+      domain: 'entrepriseos.com',
+      created_at: new Date().toISOString(),
+    }
+  ],
+  profiles: Object.entries(testUsers).map(([email, user], index) => ({
+    id: `mock-user-${email.split('@')[0]}`,
+    email,
+    first_name: user.firstName,
+    last_name: user.lastName,
+    role: user.role,
+    company_id: 'mock-company-id',
+    onboarding_completed: true,
+    status: 'active',
+    created_at: new Date().toISOString(),
+    department_id: `${(index % 5) + 1}`,
+    position_id: `${(index % 5) + 1}`,
+    hire_date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000 * 5).toISOString(),
+    phone: `+33 6 ${Math.floor(10000000 + Math.random() * 90000000)}`,
+    address: {
+      street: `${Math.floor(1 + Math.random() * 100)} rue de la Paix`,
+      city: 'Paris',
+      zip: '75001',
+      country: 'France'
+    }
+  })),
+  departments: [
+    { id: '1', name: 'Direction', company_id: 'mock-company-id', manager_id: 'mock-user-admin', budget: 500000 },
+    { id: '2', name: 'Ventes', company_id: 'mock-company-id', manager_id: 'mock-user-manager', budget: 300000 },
+    { id: '3', name: 'Production', company_id: 'mock-company-id', manager_id: 'mock-user-manager', budget: 800000 },
+    { id: '4', name: 'Ressources Humaines', company_id: 'mock-company-id', manager_id: 'mock-user-hr', budget: 200000 },
+    { id: '5', name: 'Finance', company_id: 'mock-company-id', manager_id: 'mock-user-finance', budget: 250000 },
+  ],
+  positions: [
+    { id: '1', title: 'Directeur Général', level: 'director', department_id: '1', salary_range: { min: 80000, max: 120000, currency: 'EUR' } },
+    { id: '2', title: 'Manager Commercial', level: 'manager', department_id: '2', salary_range: { min: 50000, max: 70000, currency: 'EUR' } },
+    { id: '3', title: 'Ingénieur Production', level: 'employee', department_id: '3', salary_range: { min: 35000, max: 50000, currency: 'EUR' } },
+    { id: '4', title: 'Responsable RH', level: 'manager', department_id: '4', salary_range: { min: 45000, max: 60000, currency: 'EUR' } },
+    { id: '5', title: 'Contrôleur de Gestion', level: 'manager', department_id: '5', salary_range: { min: 45000, max: 65000, currency: 'EUR' } },
+  ],
+  leave_requests: [
+    {
+      id: '1',
+      employee_id: 'mock-user-employee',
+      leave_type_id: '1',
+      start_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      end_date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+      days_requested: 3,
+      status: 'pending',
+      reason: 'Vacances familiales',
+      company_id: 'mock-company-id',
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: '2',
+      employee_id: 'mock-user-demo',
+      leave_type_id: '2',
+      start_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      end_date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+      days_requested: 1,
+      status: 'pending',
+      reason: 'Rendez-vous médical',
+      company_id: 'mock-company-id',
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: '3',
+      employee_id: 'mock-user-manager',
+      leave_type_id: '1',
+      start_date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      end_date: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+      days_requested: 5,
+      status: 'approved',
+      reason: 'Vacances été',
+      approved_by: 'mock-user-admin',
+      approved_at: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(),
+      company_id: 'mock-company-id',
+      created_at: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+    }
+  ],
+  leave_types: [
+    { id: '1', name: 'Congés payés', color: '#3B82F6', company_id: 'mock-company-id', days_per_year: 25 },
+    { id: '2', name: 'Congé maladie', color: '#EF4444', company_id: 'mock-company-id', days_per_year: null },
+    { id: '3', name: 'RTT', color: '#10B981', company_id: 'mock-company-id', days_per_year: 10 },
+    { id: '4', name: 'Congé parental', color: '#8B5CF6', company_id: 'mock-company-id', days_per_year: null },
+  ],
+  leave_balances: [
+    { id: '1', employee_id: 'mock-user-employee', leave_type_id: '1', year: 2024, total_days: 25, used_days: 5 },
+    { id: '2', employee_id: 'mock-user-employee', leave_type_id: '3', year: 2024, total_days: 10, used_days: 2 },
+    { id: '3', employee_id: 'mock-user-manager', leave_type_id: '1', year: 2024, total_days: 25, used_days: 10 },
+    { id: '4', employee_id: 'mock-user-demo', leave_type_id: '1', year: 2024, total_days: 25, used_days: 0 },
+  ],
+};
+
 export const supabaseMock = {
   auth: {
     signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
