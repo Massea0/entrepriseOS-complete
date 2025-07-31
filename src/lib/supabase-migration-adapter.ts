@@ -1,42 +1,41 @@
 import { supabase } from './supabase';
 import { useSupabaseQuery, useSupabaseMutation } from '@/hooks/use-supabase-query';
 
-// Mapping des collections mockées vers les tables Supabase
+// Mapping des collections mockées vers les tables Supabase EXISTANTES
 const COLLECTION_TO_TABLE_MAP: Record<string, string> = {
   // HR Module
-  'employees': 'employees',
+  'employees': 'profiles',
   'departments': 'departments',
   'positions': 'positions',
   'leaves': 'leave_requests',
-  'attendance': 'attendance_records',
-  'payroll': 'payroll_records',
+  'leave_types': 'leave_types',
+  'leave_balances': 'leave_balances',
   
   // CRM Module
-  'contacts': 'contacts',
+  'contacts': 'profiles', // Les contacts sont des profiles
   'companies': 'companies',
-  'opportunities': 'opportunities',
-  'activities': 'activities',
-  'campaigns': 'campaigns',
+  'opportunities': 'projects', // Opportunities = Projects avec metadata
+  'activities': 'audit_logs', // Activities tracked in audit
   
   // Finance Module
   'invoices': 'invoices',
-  'expenses': 'expenses',
-  'budgets': 'budgets',
-  'transactions': 'transactions',
-  'accounts': 'accounts',
+  'quotes': 'devis',
+  'expenses': 'invoices', // Expenses = negative invoices
+  'transactions': 'audit_logs',
   
   // Projects Module
   'projects': 'projects',
   'tasks': 'tasks',
-  'milestones': 'milestones',
-  'timesheets': 'timesheets',
+  'milestones': 'tasks', // Milestones = parent tasks
   
-  // Inventory Module
-  'products': 'products',
-  'warehouses': 'warehouses',
-  'stock_movements': 'stock_movements',
-  'purchase_orders': 'purchase_orders',
-  'suppliers': 'suppliers',
+  // AI Module
+  'ai_agents': 'ai_agents',
+  'ai_actions': 'ai_agent_actions',
+  
+  // Common
+  'users': 'profiles',
+  'organizations': 'companies',
+  'audit': 'audit_logs',
 };
 
 // Adaptateur pour les hooks existants

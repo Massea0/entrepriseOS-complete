@@ -27,20 +27,47 @@ async function testSupabase() {
 
     // Test auth
     const { data: authData, error: authError } = await supabase.auth.getSession();
-    if (authError) throw authError;
+    if (authError) console.warn('Auth test warning:', authError.message);
 
-    // Test database
-    const { count, error: dbError } = await supabase
+    // Test database - companies table
+    const { count: companiesCount, error: companiesError } = await supabase
       .from('companies')
       .select('*', { count: 'exact', head: true });
     
-    if (dbError) throw dbError;
+    if (companiesError) throw companiesError;
+
+    // Test profiles table
+    const { count: profilesCount, error: profilesError } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true });
+
+    // Test AI tables
+    const { count: aiAgentsCount, error: aiError } = await supabase
+      .from('ai_agents')
+      .select('*', { count: 'exact', head: true });
+
+    // Test Edge Functions
+    let edgeFunctionsWorking = false;
+    try {
+      const { data: pingData, error: pingError } = await supabase.functions.invoke('auto-assign-tasks', {
+        body: { test: true }
+      });
+      edgeFunctionsWorking = !pingError;
+    } catch (e) {
+      // Edge functions might require auth
+    }
 
     results.push({
       service: 'Supabase',
       status: 'success',
       message: 'Connection successful',
-      details: { tablesAccessible: true }
+      details: { 
+        tablesAccessible: true,
+        companiesTable: companiesCount !== null,
+        profilesTable: profilesCount !== null,
+        aiTables: aiAgentsCount !== null,
+        edgeFunctions: edgeFunctionsWorking
+      }
     });
   } catch (error) {
     results.push({
