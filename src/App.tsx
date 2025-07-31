@@ -7,6 +7,7 @@ import { SupabaseAuthProvider } from '@/providers/supabase-auth-provider';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useAuth } from '@/providers/supabase-auth-provider';
 import { Toaster } from 'sonner';
+import { AppStatus } from '@/components/AppStatus';
 
 // Pages - on va les créer progressivement
 const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
@@ -93,6 +94,7 @@ export function App() {
               expand={true}
               duration={4000}
             />
+            <AppStatus />
           </SupabaseAuthProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
