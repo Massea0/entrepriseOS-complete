@@ -6,7 +6,7 @@ Le fichier `.vscode/mcp.json` a été créé avec votre configuration Supabase.
 
 ### 📋 Détails de la configuration
 
-- **Project Ref** : `kdwjbqhdpthbtqpphkid`
+- **Project Ref** : `qlqgyrfqiflnqknbtycw`
 - **Token** : `sbp_2c71f95d566d26f4613dd1a4601a096a87094508`
 - **Mode** : Read-only (sécurisé)
 
