@@ -86,9 +86,9 @@ const FinanceUtils = {
 };
 
 interface SalesPipelineProps {
-  pipeline: Pipeline
-  deals: Deal[]
-  contacts: Contact[]
+  pipeline?: Pipeline
+  deals?: Deal[]
+  contacts?: Contact[]
   isLoading?: boolean
   onCreateDeal?: (data: CreateDealRequest) => Promise<void>
   onUpdateDeal?: (id: string, data: Partial<Deal>) => Promise<void>
@@ -685,11 +685,27 @@ const DealForm: React.FC<DealFormProps> = ({
   )
 }
 
+// Default mock data
+const DEFAULT_PIPELINE: Pipeline = {
+  id: 'default-pipeline',
+  name: 'Pipeline Commercial',
+  stages: [
+    { id: 'lead', name: 'Prospect', order: 1, probability: 10 },
+    { id: 'qualified', name: 'Qualifié', order: 2, probability: 25 },
+    { id: 'proposal', name: 'Proposition', order: 3, probability: 50 },
+    { id: 'negotiation', name: 'Négociation', order: 4, probability: 75 },
+    { id: 'won', name: 'Gagné', order: 5, probability: 100 },
+    { id: 'lost', name: 'Perdu', order: 6, probability: 0 }
+  ],
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+}
+
 // Main Sales Pipeline component
 export const SalesPipeline: React.FC<SalesPipelineProps> = ({
-  pipeline,
-  deals,
-  contacts,
+  pipeline = DEFAULT_PIPELINE,
+  deals = [],
+  contacts = [],
   isLoading = false,
   onCreateDeal,
   onUpdateDeal,
@@ -713,22 +729,25 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
       lost: []
     }
     
-    deals.forEach(deal => {
-      if (grouped[deal.stage]) {
-        grouped[deal.stage].push(deal)
-      }
-    })
+    if (deals && Array.isArray(deals)) {
+      deals.forEach(deal => {
+        if (grouped[deal.stage]) {
+          grouped[deal.stage].push(deal)
+        }
+      })
+    }
     
     return grouped
   }, [deals])
 
   // Calculate pipeline metrics
   const pipelineMetrics = useMemo(() => {
-    const totalValue = deals.reduce((sum, deal) => sum + deal.value.amount, 0)
-    const weightedValue = CRMUtils.calculateWeightedValue(deals)
-    const winRate = CRMUtils.calculateWinRate(deals)
-    const averageDealSize = deals.length > 0 ? totalValue / deals.length : 0
-    const averageSalesCycle = CRMUtils.calculateAverageSalesCycle(deals)
+    const safeDeals = deals || []
+    const totalValue = safeDeals.reduce((sum, deal) => sum + deal.value.amount, 0)
+    const weightedValue = CRMUtils.calculateWeightedValue(safeDeals)
+    const winRate = CRMUtils.calculateWinRate(safeDeals)
+    const averageDealSize = safeDeals.length > 0 ? totalValue / safeDeals.length : 0
+    const averageSalesCycle = CRMUtils.calculateAverageSalesCycle(safeDeals)
 
     return {
       totalValue,
@@ -736,7 +755,7 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
       winRate,
       averageDealSize,
       averageSalesCycle,
-      totalDeals: deals.length
+      totalDeals: safeDeals.length
     }
   }, [deals])
 
