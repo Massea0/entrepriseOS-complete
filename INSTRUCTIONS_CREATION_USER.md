@@ -7,7 +7,7 @@ Supprimer tous les utilisateurs existants et créer un nouvel utilisateur admin 
 
 ### 1️⃣ Supprimer les Utilisateurs Existants
 
-1. Ouvrir [Supabase Dashboard](https://app.supabase.com/project/kdwjbqhdpthbtqpphkid)
+1. Ouvrir [Supabase Dashboard](https://supabase.com/dashboard/project/qlqgyrfqiflnqknbtycw)
 2. Aller dans **Authentication** → **Users**
 3. Pour chaque utilisateur @entrepriseos.com :
    - Cliquer sur les 3 points ⋮

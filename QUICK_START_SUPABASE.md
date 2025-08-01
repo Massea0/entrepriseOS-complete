@@ -9,7 +9,7 @@
 
 ### 1️⃣ Créer l'Utilisateur Admin (2 min)
 
-1. Ouvrir [Supabase Dashboard](https://app.supabase.com/project/kdwjbqhdpthbtqpphkid)
+1. Ouvrir [Supabase Dashboard](https://supabase.com/dashboard/project/qlqgyrfqiflnqknbtycw)
 2. Aller dans **Authentication** → **Users**
 3. Cliquer **Create User**
    ```
