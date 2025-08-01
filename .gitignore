@@ -3,3 +3,4 @@ core
 .env.local
 .env.production
 .env.*
+.cursor/
