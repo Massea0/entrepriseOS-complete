@@ -23,7 +23,42 @@ import {
 } from 'lucide-react'
 import type { Task, TaskStatus, Priority, KanbanColumn } from '../types/projects.types'
 import { useProject } from '../hooks/useProjects'
-import { ProjectUtils } from '../services/projects.service'
+// import { ProjectUtils } from '../services/projects.service'
+
+// Temporary utility functions
+const ProjectUtils = {
+  getTaskStatusColor: (status: string) => {
+    const colors: Record<string, string> = {
+      todo: 'bg-gray-100 text-gray-800',
+      in_progress: 'bg-blue-100 text-blue-800',
+      review: 'bg-purple-100 text-purple-800',
+      done: 'bg-green-100 text-green-800',
+      blocked: 'bg-red-100 text-red-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  },
+  getTaskPriorityColor: (priority: string) => {
+    const colors: Record<string, string> = {
+      low: 'bg-gray-100 text-gray-800',
+      medium: 'bg-blue-100 text-blue-800',
+      high: 'bg-orange-100 text-orange-800',
+      critical: 'bg-red-100 text-red-800'
+    };
+    return colors[priority] || 'bg-gray-100 text-gray-800';
+  },
+  formatDueDate: (date: string) => {
+    return new Date(date).toLocaleDateString('fr-FR');
+  },
+  isOverdue: (dueDate: string) => {
+    return new Date(dueDate) < new Date();
+  },
+  getDaysUntilDue: (dueDate: string) => {
+    const due = new Date(dueDate);
+    const now = new Date();
+    const days = Math.floor((due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    return days;
+  }
+};
 
 interface KanbanBoardProps {
   projectId: string

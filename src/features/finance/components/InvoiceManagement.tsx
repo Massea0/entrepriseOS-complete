@@ -42,7 +42,50 @@ import type {
   CreateInvoiceRequest,
   TaxRate
 } from '../types/finance.types'
-import { FinanceUtils } from '../services/finance.service'
+// import { FinanceUtils } from '../services/finance.service'
+
+// Temporary utility functions
+const FinanceUtils = {
+  formatCurrency: (amount: number) => {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(amount);
+  },
+  getInvoiceStatusColor: (status: string) => {
+    const colors: Record<string, string> = {
+      draft: 'bg-gray-100 text-gray-800',
+      sent: 'bg-blue-100 text-blue-800',
+      viewed: 'bg-purple-100 text-purple-800',
+      paid: 'bg-green-100 text-green-800',
+      overdue: 'bg-red-100 text-red-800',
+      cancelled: 'bg-gray-100 text-gray-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  },
+  calculateTaxAmount: (subtotal: number, taxRate: number) => {
+    return subtotal * (taxRate / 100);
+  },
+  calculateTotal: (subtotal: number, taxAmount: number) => {
+    return subtotal + taxAmount;
+  },
+  isOverdue: (dueDate: string, status: string) => {
+    if (status === 'paid' || status === 'cancelled') return false;
+    return new Date(dueDate) < new Date();
+  },
+  getDaysOverdue: (dueDate: string) => {
+    const due = new Date(dueDate);
+    const now = new Date();
+    const days = Math.floor((now.getTime() - due.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.max(0, days);
+  },
+  generateInvoiceNumber: () => {
+    const year = new Date().getFullYear();
+    const month = String(new Date().getMonth() + 1).padStart(2, '0');
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `INV-${year}${month}-${random}`;
+  }
+};
 
 interface InvoiceManagementProps {
   invoices: Invoice[]

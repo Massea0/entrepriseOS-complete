@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Modal, ModalContent, ModalHeader, ModalTitle } from '@/components/ui/modal'
-import { cn } from '@/utils/cn'
+import { cn } from '@/lib/utils'
 import { 
   ChevronDownIcon,
   ChevronRightIcon,
@@ -27,7 +27,60 @@ import {
   ShrinkIcon
 } from 'lucide-react'
 import type { Employee, Department, OrgChartNode, EmployeeStatus } from '../types/hr.types'
-import { HRUtils } from '../services/hr.service'
+// import { HRUtils } from '../services/hr.service' // TODO: Implement HRUtils
+
+// Temporary utility functions until HRUtils is implemented
+const HRUtils = {
+  calculateTenure: (hireDate?: string) => {
+    if (!hireDate) return 'N/A';
+    const start = new Date(hireDate);
+    const now = new Date();
+    const years = now.getFullYear() - start.getFullYear();
+    const months = now.getMonth() - start.getMonth();
+    if (years > 0) return `${years} an${years > 1 ? 's' : ''}`;
+    if (months > 0) return `${months} mois`;
+    return 'Nouveau';
+  },
+  isOnProbation: (employee: any) => {
+    if (!employee.hireDate) return false;
+    const hireDate = new Date(employee.hireDate);
+    const now = new Date();
+    const daysSinceHire = Math.floor((now.getTime() - hireDate.getTime()) / (1000 * 60 * 60 * 24));
+    return daysSinceHire < 90; // 90 days probation
+  },
+  getDaysUntilProbationEnds: (employee: any) => {
+    if (!employee.hireDate) return 0;
+    const hireDate = new Date(employee.hireDate);
+    const now = new Date();
+    const daysSinceHire = Math.floor((now.getTime() - hireDate.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.max(0, 90 - daysSinceHire);
+  },
+  getEmployeeStatusColor: (status?: string) => {
+    const colors: Record<string, string> = {
+      active: 'bg-green-100 text-green-800',
+      inactive: 'bg-gray-100 text-gray-800',
+      suspended: 'bg-red-100 text-red-800',
+      onLeave: 'bg-yellow-100 text-yellow-800'
+    };
+    return colors[status || 'active'] || 'bg-gray-100 text-gray-800';
+  },
+  formatEmploymentType: (type?: string) => {
+    const types: Record<string, string> = {
+      fullTime: 'Temps plein',
+      partTime: 'Temps partiel',
+      contract: 'Contrat',
+      intern: 'Stage'
+    };
+    return types[type || 'fullTime'] || type || 'N/A';
+  },
+  getPerformanceRatingColor: (rating?: number) => {
+    if (!rating) return 'bg-gray-100 text-gray-800';
+    if (rating >= 4.5) return 'bg-green-100 text-green-800';
+    if (rating >= 3.5) return 'bg-blue-100 text-blue-800';
+    if (rating >= 2.5) return 'bg-yellow-100 text-yellow-800';
+    return 'bg-red-100 text-red-800';
+  }
+};
 
 interface OrgChartProps {
   orgChart: OrgChartNode[]

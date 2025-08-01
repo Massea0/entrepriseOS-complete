@@ -33,8 +33,57 @@ import type {
   Contact,
   CreateDealRequest
 } from '../types/crm.types'
-import { CRMUtils } from '../services/crm.service'
-import { FinanceUtils } from '@/features/finance/services/finance.service'
+// import { CRMUtils } from '../services/crm.service'
+// import { FinanceUtils } from '@/features/finance/services/finance.service'
+
+// Temporary utility functions
+const CRMUtils = {
+  getStageColor: (stage: string) => {
+    const colors: Record<string, string> = {
+      lead: 'bg-gray-100 text-gray-800',
+      qualification: 'bg-blue-100 text-blue-800',
+      proposal: 'bg-purple-100 text-purple-800',
+      negotiation: 'bg-yellow-100 text-yellow-800',
+      won: 'bg-green-100 text-green-800',
+      lost: 'bg-red-100 text-red-800'
+    };
+    return colors[stage] || 'bg-gray-100 text-gray-800';
+  },
+  getPriorityColor: (priority: string) => {
+    const colors: Record<string, string> = {
+      low: 'bg-gray-100 text-gray-800',
+      medium: 'bg-blue-100 text-blue-800',
+      high: 'bg-orange-100 text-orange-800',
+      critical: 'bg-red-100 text-red-800'
+    };
+    return colors[priority] || 'bg-gray-100 text-gray-800';
+  },
+  calculateDealScore: (deal: any) => {
+    // Simple scoring based on value and probability
+    const valueScore = Math.min(deal.value / 100000, 1) * 50;
+    const probabilityScore = (deal.probability / 100) * 50;
+    return Math.round(valueScore + probabilityScore);
+  },
+  formatCurrency: (amount: number) => {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(amount);
+  },
+  getDaysUntilClose: (closeDate: string) => {
+    const close = new Date(closeDate);
+    const now = new Date();
+    const days = Math.floor((close.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    return days;
+  },
+  isOverdue: (closeDate: string) => {
+    return new Date(closeDate) < new Date();
+  }
+};
+
+const FinanceUtils = {
+  formatCurrency: CRMUtils.formatCurrency
+};
 
 interface SalesPipelineProps {
   pipeline: Pipeline

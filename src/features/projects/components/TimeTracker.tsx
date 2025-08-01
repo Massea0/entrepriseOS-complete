@@ -23,7 +23,30 @@ import {
 } from 'lucide-react'
 import type { TimeEntry, TimeEntryType } from '../types/projects.types'
 import { useTimeTracking } from '../hooks/useProjects'
-import { ProjectUtils } from '../services/projects.service'
+// import { ProjectUtils } from '../services/projects.service'
+
+// Temporary utility functions
+const ProjectUtils = {
+  formatDuration: (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  },
+  calculateTotalTime: (entries: any[]) => {
+    return entries.reduce((total, entry) => total + (entry.duration || 0), 0);
+  },
+  getActivityTypeColor: (type: string) => {
+    const colors: Record<string, string> = {
+      development: 'bg-blue-100 text-blue-800',
+      meeting: 'bg-purple-100 text-purple-800',
+      review: 'bg-yellow-100 text-yellow-800',
+      planning: 'bg-green-100 text-green-800',
+      other: 'bg-gray-100 text-gray-800'
+    };
+    return colors[type] || 'bg-gray-100 text-gray-800';
+  }
+};
 
 interface TimeTrackerProps {
   projectId?: string
