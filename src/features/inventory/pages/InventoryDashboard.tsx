@@ -2,7 +2,13 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Package, Warehouse, TruckIcon, AlertTriangle } from 'lucide-react';
+import { Plus, Package, Warehouse, TruckIcon, AlertTriangle, BarChart3, QrCode } from 'lucide-react';
+import { ProductCatalog } from '../components/ProductCatalog';
+import { WarehouseManager } from '../components/WarehouseManager';
+import { StockMovements } from '../components/StockMovements';
+import { PurchaseOrderManagement } from '../components/PurchaseOrderManagement';
+import { LowStockAlerts } from '../components/LowStockAlerts';
+import { InventoryAnalytics } from '../components/InventoryAnalytics';
 
 export default function InventoryDashboard() {
   return (
@@ -72,70 +78,63 @@ export default function InventoryDashboard() {
       </div>
 
       <Tabs defaultValue="products" className="space-y-4">
-        <TabsList>
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="products">Produits</TabsTrigger>
           <TabsTrigger value="warehouses">Entrepôts</TabsTrigger>
           <TabsTrigger value="movements">Mouvements</TabsTrigger>
           <TabsTrigger value="orders">Commandes</TabsTrigger>
           <TabsTrigger value="alerts">Alertes</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="mobile">Mobile</TabsTrigger>
         </TabsList>
 
         <TabsContent value="products" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Catalogue produits</CardTitle>
-              <CardDescription>Gérez votre catalogue de produits</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Liste des produits à implémenter</p>
-            </CardContent>
-          </Card>
+          <ProductCatalog />
         </TabsContent>
 
         <TabsContent value="warehouses" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Entrepôts</CardTitle>
-              <CardDescription>Gérez vos entrepôts et emplacements</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Gestion des entrepôts à implémenter</p>
-            </CardContent>
-          </Card>
+          <WarehouseManager />
         </TabsContent>
 
         <TabsContent value="movements" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Mouvements de stock</CardTitle>
-              <CardDescription>Historique des entrées et sorties</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Mouvements de stock à implémenter</p>
-            </CardContent>
-          </Card>
+          <StockMovements />
         </TabsContent>
 
         <TabsContent value="orders" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Commandes fournisseurs</CardTitle>
-              <CardDescription>Gérez vos commandes d'approvisionnement</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Gestion des commandes à implémenter</p>
-            </CardContent>
-          </Card>
+          <PurchaseOrderManagement />
         </TabsContent>
 
         <TabsContent value="alerts" className="space-y-4">
+          <LowStockAlerts />
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-4">
+          <InventoryAnalytics />
+        </TabsContent>
+
+        <TabsContent value="mobile" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Alertes de stock</CardTitle>
-              <CardDescription>Produits en rupture ou stock faible</CardDescription>
+              <CardTitle>Opérations mobiles</CardTitle>
+              <CardDescription>Scanner et gérer l'inventaire depuis un appareil mobile</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Système d'alertes à implémenter</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="border-2 border-dashed">
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <QrCode className="h-12 w-12 text-muted-foreground mb-2" />
+                    <p className="text-sm font-medium">Scanner QR/Code-barres</p>
+                    <p className="text-xs text-muted-foreground">Utilisez l'app mobile</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-dashed">
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <Package className="h-12 w-12 text-muted-foreground mb-2" />
+                    <p className="text-sm font-medium">Réception mobile</p>
+                    <p className="text-xs text-muted-foreground">Gérez les réceptions</p>
+                  </CardContent>
+                </Card>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

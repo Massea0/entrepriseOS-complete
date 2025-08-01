@@ -2,7 +2,9 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, FolderOpen, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plus, FolderOpen, Clock, CheckCircle, AlertCircle, Calendar, BarChart3 } from 'lucide-react';
+import { KanbanBoard } from '../components/KanbanBoard';
+import { TimeTracker } from '../components/TimeTracker';
 
 export default function ProjectsDashboard() {
   return (
@@ -71,23 +73,30 @@ export default function ProjectsDashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="projects" className="space-y-4">
-        <TabsList>
+      <Tabs defaultValue="kanban" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="kanban">Kanban</TabsTrigger>
           <TabsTrigger value="projects">Projets</TabsTrigger>
           <TabsTrigger value="tasks">Tâches</TabsTrigger>
-          <TabsTrigger value="kanban">Kanban</TabsTrigger>
+          <TabsTrigger value="timetracker">Temps</TabsTrigger>
           <TabsTrigger value="gantt">Gantt</TabsTrigger>
           <TabsTrigger value="calendar">Calendrier</TabsTrigger>
         </TabsList>
 
+        <TabsContent value="kanban" className="space-y-4">
+          <KanbanBoard />
+        </TabsContent>
+
         <TabsContent value="projects" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Projets en cours</CardTitle>
-              <CardDescription>Vue d'ensemble de tous les projets</CardDescription>
+              <CardTitle>Liste des projets</CardTitle>
+              <CardDescription>Vue d'ensemble de tous vos projets</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des projets à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de liste des projets à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -96,34 +105,30 @@ export default function ProjectsDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Toutes les tâches</CardTitle>
-              <CardDescription>Gérez et assignez les tâches</CardDescription>
+              <CardDescription>Liste complète des tâches</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des tâches à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de liste des tâches à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="kanban" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Vue Kanban</CardTitle>
-              <CardDescription>Organisez vos tâches visuellement</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Board Kanban à implémenter</p>
-            </CardContent>
-          </Card>
+        <TabsContent value="timetracker" className="space-y-4">
+          <TimeTracker />
         </TabsContent>
 
         <TabsContent value="gantt" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Diagramme de Gantt</CardTitle>
-              <CardDescription>Planification temporelle des projets</CardDescription>
+              <CardDescription>Visualisation temporelle des projets</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Diagramme de Gantt à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module Gantt à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -132,10 +137,12 @@ export default function ProjectsDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Calendrier</CardTitle>
-              <CardDescription>Vue calendrier des échéances</CardDescription>
+              <CardDescription>Vue calendrier des échéances et jalons</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Calendrier à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module calendrier à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

@@ -2,7 +2,8 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Users, Building2, Target, TrendingUp } from 'lucide-react';
+import { Plus, Users, Building2, Target, TrendingUp, Phone, Mail, Calendar } from 'lucide-react';
+import { SalesPipeline } from '../components/SalesPipeline';
 
 export default function CRMDashboard() {
   return (
@@ -71,34 +72,29 @@ export default function CRMDashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="clients" className="space-y-4">
-        <TabsList>
+      <Tabs defaultValue="pipeline" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
           <TabsTrigger value="clients">Clients</TabsTrigger>
-          <TabsTrigger value="opportunities">Opportunités</TabsTrigger>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
           <TabsTrigger value="activities">Activités</TabsTrigger>
+          <TabsTrigger value="reports">Rapports</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="pipeline" className="space-y-4">
+          <SalesPipeline />
+        </TabsContent>
 
         <TabsContent value="clients" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Clients récents</CardTitle>
+              <CardTitle>Clients</CardTitle>
               <CardDescription>Gérez votre base de clients</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des clients à implémenter</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="opportunities" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Opportunités en cours</CardTitle>
-              <CardDescription>Suivez vos opportunités commerciales</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Pipeline des opportunités à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de gestion des clients à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -110,7 +106,9 @@ export default function CRMDashboard() {
               <CardDescription>Gérez vos contacts professionnels</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des contacts à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de gestion des contacts à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -122,7 +120,44 @@ export default function CRMDashboard() {
               <CardDescription>Historique des interactions</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Timeline des activités à implémenter</p>
+              <div className="space-y-4">
+                {/* Mock activities */}
+                <div className="flex items-center gap-4 p-4 border rounded-lg">
+                  <Phone className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Appel avec Client ABC</p>
+                    <p className="text-xs text-muted-foreground">Il y a 2 heures - Marie Manager</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 border rounded-lg">
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Email envoyé - Proposition commerciale</p>
+                    <p className="text-xs text-muted-foreground">Il y a 4 heures - Jean Commercial</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 border rounded-lg">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Réunion planifiée avec Prospect XYZ</p>
+                    <p className="text-xs text-muted-foreground">Demain à 14h00 - Sophie Sales</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="reports" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Rapports CRM</CardTitle>
+              <CardDescription>Analyses et statistiques</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de rapports CRM à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

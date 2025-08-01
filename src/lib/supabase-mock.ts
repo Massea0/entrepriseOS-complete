@@ -21,6 +21,12 @@ const mockData: Record<string, any[]> = {
       id: 'mock-company-id',
       name: 'EntrepriseOS Demo',
       domain: 'entrepriseos.com',
+      industry: 'Technology',
+      size: 'sme',
+      logo_url: '/logo.png',
+      settings: { theme: 'light', locale: 'fr' },
+      billing_plan: 'premium',
+      subscription_status: 'active',
       created_at: new Date().toISOString(),
     }
   ],
@@ -110,6 +116,76 @@ const mockData: Record<string, any[]> = {
     { id: '2', employee_id: 'mock-user-employee', leave_type_id: '3', year: 2024, total_days: 10, used_days: 2 },
     { id: '3', employee_id: 'mock-user-manager', leave_type_id: '1', year: 2024, total_days: 25, used_days: 10 },
     { id: '4', employee_id: 'mock-user-demo', leave_type_id: '1', year: 2024, total_days: 25, used_days: 0 },
+  ],
+  // CRM Data
+  clients: [
+    { id: 'client1', name: 'Tech Solutions SAS', email: 'contact@techsolutions.fr', phone: '+33 1 23 45 67 89', industry: 'Technology', status: 'active', company_id: 'mock-company-id' },
+    { id: 'client2', name: 'Innovation Corp', email: 'info@innovation.fr', phone: '+33 1 98 76 54 32', industry: 'Consulting', status: 'active', company_id: 'mock-company-id' },
+    { id: 'client3', name: 'Digital Agency', email: 'hello@digitalagency.fr', phone: '+33 1 11 22 33 44', industry: 'Marketing', status: 'prospect', company_id: 'mock-company-id' },
+  ],
+  opportunities: [
+    { id: 'opp1', client_id: 'client1', name: 'Migration Cloud', value: 50000, stage: 'negotiation', probability: 70, close_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'opp2', client_id: 'client2', name: 'Refonte SI', value: 120000, stage: 'proposal', probability: 40, close_date: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'opp3', client_id: 'client3', name: 'Audit Digital', value: 25000, stage: 'qualification', probability: 20, close_date: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+  ],
+  // Projects Data
+  projects: [
+    { id: 'proj1', name: 'Refonte Site Web', status: 'active', progress: 75, start_date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), budget: 45000, spent_budget: 33750, manager_id: 'mock-user-manager', company_id: 'mock-company-id' },
+    { id: 'proj2', name: 'App Mobile v2', status: 'planning', progress: 20, start_date: new Date().toISOString(), end_date: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000).toISOString(), budget: 80000, spent_budget: 16000, manager_id: 'mock-user-manager', company_id: 'mock-company-id' },
+    { id: 'proj3', name: 'Migration Infrastructure', status: 'completed', progress: 100, start_date: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(), end_date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), budget: 120000, spent_budget: 115000, manager_id: 'mock-user-admin', company_id: 'mock-company-id' },
+  ],
+  tasks: [
+    { id: 'task1', project_id: 'proj1', title: 'Design Homepage', status: 'done', priority: 'high', assignee_id: 'mock-user-employee', due_date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'task2', project_id: 'proj1', title: 'Intégration API', status: 'in_progress', priority: 'high', assignee_id: 'mock-user-manager', due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'task3', project_id: 'proj2', title: 'Étude de marché', status: 'todo', priority: 'medium', assignee_id: 'mock-user-demo', due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'task4', project_id: 'proj1', title: 'Tests utilisateurs', status: 'todo', priority: 'medium', assignee_id: null, due_date: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+  ],
+  // Finance Data
+  invoices: [
+    { id: 'inv1', invoice_number: 'INV-2024-001', client_name: 'Tech Solutions SAS', total_amount: 5000, status: 'paid', issue_date: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(), due_date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'inv2', invoice_number: 'INV-2024-002', client_name: 'Innovation Corp', total_amount: 12500, status: 'sent', issue_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), due_date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'inv3', invoice_number: 'INV-2024-003', client_name: 'Digital Agency', total_amount: 3200, status: 'draft', issue_date: new Date().toISOString(), due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+  ],
+  devis: [
+    { id: 'devis1', devis_number: 'DEV-2024-001', client_name: 'Startup Innovante', total_amount: 25000, status: 'sent', valid_until: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'devis2', devis_number: 'DEV-2024-002', client_name: 'Entreprise Locale', total_amount: 8500, status: 'accepted', valid_until: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+  ],
+  // Inventory Data
+  products: [
+    { id: 'prod1', name: 'Laptop Pro 15"', sku: 'LPT-PRO-15', category: 'Electronics', price: 1299, stock_quantity: 45, min_stock: 10, company_id: 'mock-company-id' },
+    { id: 'prod2', name: 'Souris Ergonomique', sku: 'MS-ERG-001', category: 'Accessories', price: 59, stock_quantity: 120, min_stock: 20, company_id: 'mock-company-id' },
+    { id: 'prod3', name: 'Clavier Mécanique', sku: 'KB-MECH-001', category: 'Accessories', price: 129, stock_quantity: 8, min_stock: 15, company_id: 'mock-company-id' },
+    { id: 'prod4', name: 'Écran 27" 4K', sku: 'MON-4K-27', category: 'Electronics', price: 599, stock_quantity: 22, min_stock: 5, company_id: 'mock-company-id' },
+  ],
+  warehouses: [
+    { id: 'wh1', name: 'Entrepôt Principal', location: 'Paris', capacity: 10000, used_capacity: 6500, company_id: 'mock-company-id' },
+    { id: 'wh2', name: 'Entrepôt Secondaire', location: 'Lyon', capacity: 5000, used_capacity: 2200, company_id: 'mock-company-id' },
+    { id: 'wh3', name: 'Point de Stockage', location: 'Marseille', capacity: 2000, used_capacity: 1800, company_id: 'mock-company-id' },
+  ],
+  stock_movements: [
+    { id: 'mov1', product_id: 'prod1', warehouse_id: 'wh1', type: 'in', quantity: 20, date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), reason: 'Purchase Order #PO-001', company_id: 'mock-company-id' },
+    { id: 'mov2', product_id: 'prod2', warehouse_id: 'wh1', type: 'out', quantity: 15, date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), reason: 'Sales Order #SO-123', company_id: 'mock-company-id' },
+    { id: 'mov3', product_id: 'prod3', warehouse_id: 'wh2', type: 'transfer', quantity: 10, date: new Date().toISOString(), reason: 'Transfer to WH1', company_id: 'mock-company-id' },
+  ],
+  purchase_orders: [
+    { id: 'po1', order_number: 'PO-2024-001', supplier: 'Tech Supplier Inc', status: 'delivered', total_amount: 25990, order_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
+    { id: 'po2', order_number: 'PO-2024-002', supplier: 'Office Supplies Co', status: 'pending', total_amount: 3540, order_date: new Date().toISOString(), company_id: 'mock-company-id' },
+  ],
+  // AI Data
+  ai_agents: [
+    { id: 'ai1', name: 'Auto-Assignment Bot', type: 'auto_assign', status: 'active', configuration: { priority_threshold: 'high', max_assignments_per_day: 50 }, company_id: 'mock-company-id' },
+    { id: 'ai2', name: 'Smart Notifications', type: 'notifications', status: 'active', configuration: { channels: ['email', 'in-app'], quiet_hours: '22:00-08:00' }, company_id: 'mock-company-id' },
+    { id: 'ai3', name: 'Predictive Analytics', type: 'analytics', status: 'active', configuration: { models: ['sales_forecast', 'churn_prediction'] }, company_id: 'mock-company-id' },
+  ],
+  // Audit & Logs
+  audit_logs: [
+    { id: 'log1', action: 'login', resource_type: 'user', created_at: new Date().toISOString(), company_id: 'mock-company-id', user_id: 'mock-user-admin' },
+    { id: 'log2', action: 'create', resource_type: 'project', resource_id: 'proj1', created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id', user_id: 'mock-user-manager' },
+    { id: 'log3', action: 'update', resource_type: 'invoice', resource_id: 'inv1', created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id', user_id: 'mock-user-finance' },
+  ],
+  stock_alerts: [
+    { id: 'alert1', product_id: 'prod3', type: 'low_stock', message: 'Stock faible: Clavier Mécanique (8/15)', created_at: new Date().toISOString(), company_id: 'mock-company-id' },
+    { id: 'alert2', warehouse_id: 'wh3', type: 'capacity_warning', message: 'Capacité proche du maximum: Marseille (90%)', created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), company_id: 'mock-company-id' },
   ],
 };
 

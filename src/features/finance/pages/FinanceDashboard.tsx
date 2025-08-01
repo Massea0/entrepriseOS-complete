@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Euro, TrendingUp, FileText, CreditCard } from 'lucide-react';
+import { InvoiceManagement } from '../components/InvoiceManagement';
 
 export default function FinanceDashboard() {
   return (
@@ -72,7 +73,7 @@ export default function FinanceDashboard() {
       </div>
 
       <Tabs defaultValue="invoices" className="space-y-4">
-        <TabsList>
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="invoices">Factures</TabsTrigger>
           <TabsTrigger value="quotes">Devis</TabsTrigger>
           <TabsTrigger value="payments">Paiements</TabsTrigger>
@@ -81,25 +82,19 @@ export default function FinanceDashboard() {
         </TabsList>
 
         <TabsContent value="invoices" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Factures récentes</CardTitle>
-              <CardDescription>Gérez vos factures clients</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Liste des factures à implémenter</p>
-            </CardContent>
-          </Card>
+          <InvoiceManagement />
         </TabsContent>
 
         <TabsContent value="quotes" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Devis en cours</CardTitle>
-              <CardDescription>Suivez vos devis et propositions</CardDescription>
+              <CardDescription>Gérez vos devis et propositions commerciales</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des devis à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de gestion des devis à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -107,11 +102,13 @@ export default function FinanceDashboard() {
         <TabsContent value="payments" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Paiements reçus</CardTitle>
-              <CardDescription>Historique des paiements</CardDescription>
+              <CardTitle>Paiements</CardTitle>
+              <CardDescription>Suivi des paiements reçus et en attente</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Historique des paiements à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de gestion des paiements à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -120,10 +117,12 @@ export default function FinanceDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Dépenses</CardTitle>
-              <CardDescription>Gérez vos dépenses professionnelles</CardDescription>
+              <CardDescription>Gérez et catégorisez vos dépenses</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Gestion des dépenses à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de gestion des dépenses à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -132,10 +131,12 @@ export default function FinanceDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Rapports financiers</CardTitle>
-              <CardDescription>Analyses et rapports</CardDescription>
+              <CardDescription>Analyses et tableaux de bord financiers</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Rapports financiers à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de rapports financiers à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

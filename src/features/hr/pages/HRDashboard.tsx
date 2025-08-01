@@ -1,57 +1,55 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Users, 
-  Calendar, 
-  Briefcase, 
-  UserPlus,
-  Clock,
-  TrendingUp,
-  Award,
-  FileText
-} from 'lucide-react';
-
-// Import des composants HR
+import { HRStats } from '../components/HRStats';
 import { EmployeeList } from '../components/EmployeeList';
 import { LeaveManagement } from '../components/LeaveManagement';
 import { RecruitmentDashboard } from '../components/RecruitmentDashboard';
-import { HRStats } from '../components/HRStats';
+import { OrgChart } from '../components/OrgChart';
+import { Button } from '@/components/ui/button';
+import { Plus, Users, Calendar, Building2, UserPlus } from 'lucide-react';
 
 export default function HRDashboard() {
   return (
-    <div className="space-y-6">
-      {/* En-tête */}
+    <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Ressources Humaines</h1>
-          <p className="text-muted-foreground">Gérez vos employés, congés et recrutements</p>
+          <p className="text-muted-foreground">Gérez vos employés et votre organisation</p>
         </div>
-        <Button>
-          <UserPlus className="mr-2 h-4 w-4" />
-          Nouvel employé
-        </Button>
+        <div className="flex gap-2">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Nouvel employé
+          </Button>
+          <Button variant="outline">
+            <UserPlus className="h-4 w-4 mr-2" />
+            Nouveau poste
+          </Button>
+        </div>
       </div>
 
-      {/* Statistiques */}
+      {/* Statistiques RH */}
       <HRStats />
 
-      {/* Onglets principaux */}
       <Tabs defaultValue="employees" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="employees">
-            <Users className="mr-2 h-4 w-4" />
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="employees" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
             Employés
           </TabsTrigger>
-          <TabsTrigger value="leaves">
-            <Calendar className="mr-2 h-4 w-4" />
+          <TabsTrigger value="leaves" className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
             Congés
           </TabsTrigger>
-          <TabsTrigger value="recruitment">
-            <Briefcase className="mr-2 h-4 w-4" />
+          <TabsTrigger value="orgchart" className="flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            Organigramme
+          </TabsTrigger>
+          <TabsTrigger value="recruitment" className="flex items-center gap-2">
+            <UserPlus className="h-4 w-4" />
             Recrutement
           </TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
         </TabsList>
 
         <TabsContent value="employees" className="space-y-4">
@@ -62,8 +60,18 @@ export default function HRDashboard() {
           <LeaveManagement />
         </TabsContent>
 
+        <TabsContent value="orgchart" className="space-y-4">
+          <OrgChart />
+        </TabsContent>
+
         <TabsContent value="recruitment" className="space-y-4">
           <RecruitmentDashboard />
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <div className="text-center py-12 text-muted-foreground">
+            Module de gestion de la performance à implémenter
+          </div>
         </TabsContent>
       </Tabs>
     </div>

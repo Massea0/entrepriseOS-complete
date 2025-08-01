@@ -2,7 +2,8 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Brain, Zap, BarChart3, Bot } from 'lucide-react';
+import { Sparkles, Brain, Zap, BarChart3, Bot, TestTube } from 'lucide-react';
+import { AIFunctionsTestPanel } from '../components/AIFunctionsTestPanel';
 
 export default function AIDashboard() {
   return (
@@ -71,8 +72,9 @@ export default function AIDashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="automations" className="space-y-4">
-        <TabsList>
+      <Tabs defaultValue="test-panel" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="test-panel">Test IA</TabsTrigger>
           <TabsTrigger value="automations">Automatisations</TabsTrigger>
           <TabsTrigger value="analytics">Analytics IA</TabsTrigger>
           <TabsTrigger value="assistant">Assistant</TabsTrigger>
@@ -80,14 +82,20 @@ export default function AIDashboard() {
           <TabsTrigger value="workflows">Workflows</TabsTrigger>
         </TabsList>
 
+        <TabsContent value="test-panel" className="space-y-4">
+          <AIFunctionsTestPanel />
+        </TabsContent>
+
         <TabsContent value="automations" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Automatisations actives</CardTitle>
-              <CardDescription>Gérez vos processus automatisés</CardDescription>
+              <CardDescription>Gérez vos processus automatisés par l'IA</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Liste des automatisations à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module d'automatisations IA à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -96,10 +104,12 @@ export default function AIDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Analytics IA</CardTitle>
-              <CardDescription>Insights intelligents sur vos données</CardDescription>
+              <CardDescription>Insights intelligents et prédictifs</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Dashboard analytics IA à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module d'analytics IA à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -108,10 +118,12 @@ export default function AIDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Assistant IA</CardTitle>
-              <CardDescription>Votre assistant personnel intelligent</CardDescription>
+              <CardDescription>Votre assistant virtuel intelligent</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Interface assistant IA à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module d'assistant IA à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -119,11 +131,13 @@ export default function AIDashboard() {
         <TabsContent value="predictions" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Prédictions</CardTitle>
-              <CardDescription>Anticipez les tendances avec l'IA</CardDescription>
+              <CardTitle>Prédictions IA</CardTitle>
+              <CardDescription>Anticipez les tendances et comportements</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Module de prédictions à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de prédictions IA à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -132,10 +146,12 @@ export default function AIDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Workflows intelligents</CardTitle>
-              <CardDescription>Orchestration automatique des processus</CardDescription>
+              <CardDescription>Orchestration automatique des processus métier</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Gestionnaire de workflows IA à implémenter</p>
+              <div className="text-center py-12 text-muted-foreground">
+                Module de workflows IA à implémenter
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
