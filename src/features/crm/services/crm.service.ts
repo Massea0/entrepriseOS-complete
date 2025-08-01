@@ -20,7 +20,7 @@ export class CRMService {
       .from('projects')
       .select(`
         *,
-        manager:profiles!manager_id(
+        owner:profiles!owner_id(
           id,
           first_name,
           last_name,
@@ -44,15 +44,15 @@ export class CRMService {
       probability: this.calculateProbability(project.status),
       expectedCloseDate: new Date(project.end_date || Date.now() + 30 * 24 * 60 * 60 * 1000),
       contactId: project.client_id || '',
-      assignedToId: project.manager_id || '',
-      assignedTo: project.manager || null,
+      assignedToId: project.owner_id || '',
+      assignedTo: project.owner || null,
       createdAt: new Date(project.created_at),
       updatedAt: new Date(project.updated_at),
       tags: project.tags || [],
       priority: project.priority || 'medium',
       description: project.description || '',
       actualCloseDate: project.status === 'completed' ? new Date(project.updated_at) : undefined,
-      companyId: project.company_id
+      companyId: project.client_company_id
     }))
   }
 
@@ -99,15 +99,15 @@ export class CRMService {
         priority: deal.priority || 'medium',
         budget: deal.value?.amount || 0,
         end_date: deal.expectedCloseDate?.toISOString(),
-        manager_id: userData?.user?.id,
-        company_id: profile?.company_id,
+        owner_id: userData?.user?.id,
+        client_company_id: profile?.company_id,
         client_id: deal.contactId,
         tags: deal.tags || [],
         progress: deal.probability || 0
       })
       .select(`
         *,
-        manager:profiles!manager_id(
+        owner:profiles!owner_id(
           id,
           first_name,
           last_name,
