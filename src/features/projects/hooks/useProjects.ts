@@ -3,7 +3,8 @@
 import React from 'react'
 import { create } from 'zustand'
 import { ProjectsService } from '../services/projects.service'
-import { useAuth } from '@/features/auth'
+// import { useAuth } from '@/features/auth'
+import { useAuth } from '@/hooks/use-auth'
 import type {
   Project,
   Task,

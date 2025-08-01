@@ -704,7 +704,22 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
 
   // Group deals by stage
   const dealsByStage = useMemo(() => {
-    return CRMUtils.groupDealsByStage(deals)
+    const grouped: Record<DealStage, Deal[]> = {
+      lead: [],
+      qualified: [],
+      proposal: [],
+      negotiation: [],
+      won: [],
+      lost: []
+    }
+    
+    deals.forEach(deal => {
+      if (grouped[deal.stage]) {
+        grouped[deal.stage].push(deal)
+      }
+    })
+    
+    return grouped
   }, [deals])
 
   // Calculate pipeline metrics

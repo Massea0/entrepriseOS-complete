@@ -602,7 +602,7 @@ const InvoiceTable: React.FC<{
   onDelete: (invoice: Invoice) => void
   onGeneratePDF: (invoice: Invoice) => void
 }> = ({ invoices, onView, onEdit, onSend, onMarkAsPaid, onDelete, onGeneratePDF }) => {
-  if (invoices.length === 0) {
+  if (!invoices || invoices.length === 0) {
     return (
       <Card>
         <CardContent className="p-12 text-center">
@@ -773,23 +773,23 @@ export const InvoiceManagement: React.FC<InvoiceManagementProps> = ({
   const filteredInvoices = useMemo(() => {
     switch (activeTab) {
       case 'draft':
-        return invoices.filter(inv => inv.status === 'draft')
+        return (invoices || []).filter(inv => inv.status === 'draft')
       case 'sent':
-        return invoices.filter(inv => ['sent', 'viewed'].includes(inv.status))
+        return (invoices || []).filter(inv => ['sent', 'viewed'].includes(inv.status))
       case 'unpaid':
-        return invoices.filter(inv => ['sent', 'viewed', 'partial', 'overdue'].includes(inv.status))
+        return (invoices || []).filter(inv => ['sent', 'viewed', 'partial', 'overdue'].includes(inv.status))
       case 'paid':
-        return invoices.filter(inv => inv.status === 'paid')
+        return (invoices || []).filter(inv => inv.status === 'paid')
       case 'overdue':
-        return invoices.filter(inv => inv.status === 'overdue')
+        return (invoices || []).filter(inv => inv.status === 'overdue')
       default:
-        return invoices
+        return invoices || []
     }
   }, [invoices, activeTab])
 
   // Calculate summary statistics
   const summaryStats = useMemo(() => {
-    const totalAmount = invoices.reduce((sum, inv) => 
+    const totalAmount = (invoices || []).reduce((sum, inv) => 
       FinanceUtils.addMoney(sum, inv.totalAmount), 
       { amount: 0, currency: 'EUR' }
     )
@@ -890,7 +890,7 @@ export const InvoiceManagement: React.FC<InvoiceManagementProps> = ({
       {/* Tabs and Filters */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="all">Toutes ({invoices.length})</TabsTrigger>
+                      <TabsTrigger value="all">Toutes ({(invoices || []).length})</TabsTrigger>
           <TabsTrigger value="draft">Brouillons</TabsTrigger>
           <TabsTrigger value="sent">Envoyées</TabsTrigger>
           <TabsTrigger value="unpaid">Impayées</TabsTrigger>

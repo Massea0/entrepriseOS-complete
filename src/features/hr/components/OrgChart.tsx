@@ -139,8 +139,8 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
         {/* Employee Header */}
         <div className="flex items-start space-x-3">
           <Avatar
-            name={`${employee.user.firstName} ${employee.user.lastName}`}
-            src={employee.user.avatar}
+            name={`${employee.firstName} ${employee.lastName}`}
+            src={employee.avatar}
             size="lg"
             className="ring-2 ring-background"
           />
@@ -152,7 +152,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
                   className="font-semibold text-base truncate hover:text-primary cursor-pointer"
                   onClick={handleEmployeeClick}
                 >
-                  {employee.user.firstName} {employee.user.lastName}
+                  {employee.firstName} {employee.lastName}
                 </h3>
                 <p className="text-sm text-muted-foreground truncate">
                   {employee.position.title}
@@ -193,7 +193,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
             <div className="mt-3 space-y-1">
               <div className="flex items-center text-xs text-muted-foreground">
                 <MailIcon className="h-3 w-3 mr-1" />
-                <span className="truncate">{employee.user.email}</span>
+                                    <span className="truncate">{employee.email}</span>
               </div>
               
               {employee.phone && (
@@ -274,9 +274,9 @@ const OrgChartTree: React.FC<{
     
     const searchLower = term.toLowerCase()
     return (
-      employee.user.firstName.toLowerCase().includes(searchLower) ||
-      employee.user.lastName.toLowerCase().includes(searchLower) ||
-      employee.user.email.toLowerCase().includes(searchLower) ||
+      employee.firstName.toLowerCase().includes(searchLower) ||
+      employee.lastName.toLowerCase().includes(searchLower) ||
+      employee.email.toLowerCase().includes(searchLower) ||
       employee.position.title.toLowerCase().includes(searchLower) ||
       employee.department.name.toLowerCase().includes(searchLower) ||
       employee.employeeId.toLowerCase().includes(searchLower)
@@ -347,13 +347,13 @@ const EmployeeDetailModal: React.FC<{
         <ModalHeader>
           <ModalTitle className="flex items-center space-x-3">
             <Avatar
-              name={`${employee.user.firstName} ${employee.user.lastName}`}
-              src={employee.user.avatar}
+                                  name={`${employee.firstName} ${employee.lastName}`}
+                    src={employee.avatar}
               size="lg"
             />
             <div>
               <h2 className="text-xl font-semibold">
-                {employee.user.firstName} {employee.user.lastName}
+                                  {employee.firstName} {employee.lastName}
               </h2>
               <p className="text-sm text-muted-foreground font-normal">
                 {employee.position.title}
@@ -395,7 +395,7 @@ const EmployeeDetailModal: React.FC<{
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">Email professionnel</label>
-                <div className="mt-1 text-sm">{employee.user.email}</div>
+                                    <div className="mt-1 text-sm">{employee.email}</div>
               </div>
               {employee.personalEmail && (
                 <div>
@@ -743,11 +743,11 @@ export const OrgChart: React.FC<OrgChartProps> = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Tous les départements</SelectItem>
-            {departments.map((dept) => (
+            {departments?.map((dept) => (
               <SelectItem key={dept.id} value={dept.id}>
                 {dept.name}
               </SelectItem>
-            ))}
+            )) || null}
           </SelectContent>
         </Select>
       </div>
