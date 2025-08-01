@@ -49,6 +49,17 @@ const CRMUtils = {
     };
     return colors[stage] || 'bg-gray-100 text-gray-800';
   },
+  getStageColorHex: (stage: string) => {
+    const colors: Record<string, string> = {
+      lead: '#E5E7EB',      // gray-200
+      qualified: '#DBEAFE', // blue-100
+      proposal: '#E9D5FF',  // purple-100
+      negotiation: '#FEF3C7', // yellow-100
+      won: '#D1FAE5',       // green-100
+      lost: '#FEE2E2'       // red-100
+    };
+    return colors[stage] || '#E5E7EB';
+  },
   getPriorityColor: (priority: string) => {
     const colors: Record<string, string> = {
       low: 'bg-gray-100 text-gray-800',
@@ -81,6 +92,17 @@ const CRMUtils = {
   },
   isOverdue: (closeDate: string | Date) => {
     return new Date(closeDate) < new Date();
+  },
+  isDealOverdue: (deal: any) => {
+    // Check if the expected close date has passed
+    return deal.expectedCloseDate && new Date(deal.expectedCloseDate) < new Date();
+  },
+  calculateDealAge: (deal: any) => {
+    // Calculate days since deal creation
+    const created = new Date(deal.createdAt);
+    const now = new Date();
+    const days = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+    return days;
   },
   calculateWeightedValue: (deals: Deal[]) => {
     // Calculate weighted pipeline value based on deal stage probability
@@ -1088,7 +1110,7 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
               id: stage.id,
               name: stage.name,
               stage: stage.id as DealStage,
-              color: CRMUtils.getStageColor(stage.id),
+              color: CRMUtils.getStageColorHex(stage.id),
               probability: stage.probability
             }}
             deals={dealsByStage[stage.id as DealStage] || []}
