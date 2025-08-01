@@ -5,8 +5,8 @@ import { supabaseMock } from './supabase-mock';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Forcer l'utilisation du mock pour le développement local
-const USE_MOCK = true; // Temporairement forcé à true pour éviter les erreurs de connexion
+// Utiliser la vraie instance Supabase
+const USE_MOCK = false; // Connexion réelle à Supabase
 
 if (USE_MOCK) {
   console.log('🔧 Mode développement : Utilisation du mock Supabase');
@@ -77,17 +77,17 @@ export const getCurrentSession = async () => {
 };
 
 // Helper for RLS
-export const getOrganizationId = async () => {
+export const getCompanyId = async () => {
   const { user } = await getCurrentUser();
   if (!user) return null;
   
   const { data } = await supabase
-    .from('user_profiles')
-    .select('organization_id')
-    .eq('user_id', user.id)
+    .from('profiles')
+    .select('company_id')
+    .eq('id', user.id)
     .single();
     
-  return data?.organization_id;
+  return data?.company_id;
 };
 
 // Real-time subscription helper
