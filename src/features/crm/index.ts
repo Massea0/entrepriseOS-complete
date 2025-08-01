@@ -1,8 +1,18 @@
 // Services
-export { CRMService, CRMUtils } from './services/crm.service'
+export { CRMService } from './services/crm.service'
 
 // Components
 export { SalesPipeline } from './components/SalesPipeline'
+export { DealCard } from './components/DealCard'
+export { DealForm } from './components/DealForm'
+export { PipelineStage } from './components/PipelineStage'
+export { PipelineMetrics } from './components/PipelineMetrics'
+
+// Hooks
+export { usePipeline } from './hooks/usePipeline'
+
+// Utils
+export { CRMUtils, FinanceUtils } from './utils/crm.utils'
 
 // Types
 export type {
