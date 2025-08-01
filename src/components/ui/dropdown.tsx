@@ -1,1 +1,41 @@
-export * from './dropdown';
+export {
+  Dropdown,
+  Dropdown as DropdownMenu,
+  DropdownTrigger,
+  DropdownTrigger as DropdownMenuTrigger,
+  DropdownPortal,
+  DropdownContent,
+  DropdownContent as DropdownMenuContent,
+  DropdownItem,
+  DropdownItem as DropdownMenuItem,
+  DropdownLabel,
+  DropdownSeparator,
+  DropdownSeparator as DropdownMenuSeparator,
+  DropdownGroup,
+  DropdownSub,
+  DropdownSubTrigger,
+  DropdownSubContent,
+  DropdownCheckboxItem,
+  DropdownRadioGroup,
+  DropdownRadioItem,
+  DropdownArrow,
+  DropdownShortcut
+} from './dropdown';
+
+export type {
+  DropdownProps,
+  DropdownTriggerProps,
+  DropdownContentProps,
+  DropdownItemProps,
+  DropdownLabelProps,
+  DropdownSeparatorProps,
+  DropdownGroupProps,
+  DropdownSubProps,
+  DropdownSubTriggerProps,
+  DropdownSubContentProps,
+  DropdownCheckboxItemProps,
+  DropdownRadioGroupProps,
+  DropdownRadioItemProps,
+  DropdownPortalProps,
+  DropdownArrowProps
+} from './dropdown/dropdown.types';
