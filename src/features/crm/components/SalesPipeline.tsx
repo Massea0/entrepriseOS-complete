@@ -149,7 +149,10 @@ const CRMUtils = {
 };
 
 const FinanceUtils = {
-  formatCurrency: CRMUtils.formatCurrency
+  formatCurrency: CRMUtils.formatCurrency,
+  formatMoney: (money: { amount: number; currency: string }) => {
+    return CRMUtils.formatCurrency(money.amount);
+  }
 };
 
 interface SalesPipelineProps {
