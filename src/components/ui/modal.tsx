@@ -11,8 +11,8 @@ export {
   ModalPortal,
   ModalOverlay,
   Dialog,
-} from './modal';
+} from './modal/index';
 
 export type {
   DialogProps,
-} from './modal';
+} from './modal/index';

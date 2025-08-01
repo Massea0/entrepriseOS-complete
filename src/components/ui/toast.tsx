@@ -7,14 +7,14 @@ export {
   ToastProvider,
   ToastViewport,
   Toaster,
-} from './toast';
+} from './toast/index';
 
 export type {
   ToastProps,
   ToastData,
   ToastActionElement,
   ToasterProps,
-} from './toast';
+} from './toast/index';
 
 export { 
   useToast, 

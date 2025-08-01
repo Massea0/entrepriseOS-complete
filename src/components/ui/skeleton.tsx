@@ -1,1 +1,1 @@
-export * from './skeleton/skeleton';
+export * from './skeleton/index';

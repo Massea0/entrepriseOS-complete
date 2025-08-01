@@ -20,7 +20,7 @@ export {
   DropdownRadioItem,
   DropdownArrow,
   DropdownShortcut
-} from './dropdown';
+} from './dropdown/index';
 
 export type {
   DropdownProps,

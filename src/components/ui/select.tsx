@@ -8,6 +8,6 @@ export {
   SelectValue,
   SelectIcon,
   SelectPortal,
-} from './select';
+} from './select/index';
 
-export type { SelectProps } from './select';
+export type { SelectProps } from './select/index';

@@ -3,10 +3,10 @@ export {
   SpinnerOverlay,
   LoadingButton,
   LoadingDots,
-} from './spinner';
+} from './spinner/index';
 
 export type {
   SpinnerProps,
   SpinnerOverlayProps,
   LoadingButtonProps,
-} from './spinner';
+} from './spinner/index';
