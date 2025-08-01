@@ -4,6 +4,16 @@
 let mockUser: any = null;
 let mockSession: any = null;
 
+// Base de données des utilisateurs test
+const testUsers: Record<string, { password: string; role: string; firstName: string; lastName: string }> = {
+  'demo@entrepriseos.com': { password: 'DemoPass123!', role: 'employee', firstName: 'Demo', lastName: 'User' },
+  'admin@entrepriseos.com': { password: 'AdminPass123!', role: 'admin', firstName: 'Admin', lastName: 'Système' },
+  'manager@entrepriseos.com': { password: 'ManagerPass123!', role: 'manager', firstName: 'Marie', lastName: 'Manager' },
+  'employee@entrepriseos.com': { password: 'EmployeePass123!', role: 'employee', firstName: 'Jean', lastName: 'Employé' },
+  'hr@entrepriseos.com': { password: 'HRPass123!', role: 'hr_manager', firstName: 'Sophie', lastName: 'RH' },
+  'finance@entrepriseos.com': { password: 'FinancePass123!', role: 'finance_manager', firstName: 'Pierre', lastName: 'Finance' },
+};
+
 // Données mock pour les tables
 const mockData: Record<string, any[]> = {
   companies: [
@@ -107,15 +117,6 @@ export const supabaseMock = {
   auth: {
     signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
       // Base de données des utilisateurs test
-      const testUsers: Record<string, { password: string; role: string; firstName: string; lastName: string }> = {
-        'demo@entrepriseos.com': { password: 'DemoPass123!', role: 'employee', firstName: 'Demo', lastName: 'User' },
-        'admin@entrepriseos.com': { password: 'AdminPass123!', role: 'admin', firstName: 'Admin', lastName: 'Système' },
-        'manager@entrepriseos.com': { password: 'ManagerPass123!', role: 'manager', firstName: 'Marie', lastName: 'Manager' },
-        'employee@entrepriseos.com': { password: 'EmployeePass123!', role: 'employee', firstName: 'Jean', lastName: 'Employé' },
-        'hr@entrepriseos.com': { password: 'HRPass123!', role: 'hr_manager', firstName: 'Sophie', lastName: 'RH' },
-        'finance@entrepriseos.com': { password: 'FinancePass123!', role: 'finance_manager', firstName: 'Pierre', lastName: 'Finance' },
-      };
-
       const user = testUsers[email];
       if (user && user.password === password) {
         mockUser = {
