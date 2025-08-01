@@ -41,7 +41,7 @@ const CRMUtils = {
   getStageColor: (stage: string) => {
     const colors: Record<string, string> = {
       lead: 'bg-gray-100 text-gray-800',
-      qualification: 'bg-blue-100 text-blue-800',
+      qualified: 'bg-blue-100 text-blue-800',
       proposal: 'bg-purple-100 text-purple-800',
       negotiation: 'bg-yellow-100 text-yellow-800',
       won: 'bg-green-100 text-green-800',
@@ -70,14 +70,56 @@ const CRMUtils = {
       currency: 'EUR'
     }).format(amount);
   },
-  getDaysUntilClose: (closeDate: string) => {
+  getDaysUntilClose: (closeDate: string | Date) => {
     const close = new Date(closeDate);
     const now = new Date();
     const days = Math.floor((close.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     return days;
   },
-  isOverdue: (closeDate: string) => {
+  daysUntilClose: (closeDate: string | Date) => {
+    return CRMUtils.getDaysUntilClose(closeDate);
+  },
+  isOverdue: (closeDate: string | Date) => {
     return new Date(closeDate) < new Date();
+  },
+  calculateWeightedValue: (deals: Deal[]) => {
+    // Calculate weighted pipeline value based on deal stage probability
+    return deals.reduce((total, deal) => {
+      const probability = deal.probability || 0;
+      return total + (deal.value.amount * (probability / 100));
+    }, 0);
+  },
+  calculateWinRate: (deals: Deal[]) => {
+    // Calculate win rate percentage
+    const closedDeals = deals.filter(deal => deal.stage === 'won' || deal.stage === 'lost');
+    if (closedDeals.length === 0) return 0;
+    const wonDeals = closedDeals.filter(deal => deal.stage === 'won');
+    return (wonDeals.length / closedDeals.length) * 100;
+  },
+  calculateAverageSalesCycle: (deals: Deal[]) => {
+    // Calculate average days from creation to closing
+    const closedDeals = deals.filter(deal => 
+      (deal.stage === 'won' || deal.stage === 'lost') && deal.actualCloseDate
+    );
+    if (closedDeals.length === 0) return 0;
+    
+    const totalDays = closedDeals.reduce((sum, deal) => {
+      const created = new Date(deal.createdAt);
+      const closed = new Date(deal.actualCloseDate!);
+      const days = Math.floor((closed.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+      return sum + days;
+    }, 0);
+    
+    return Math.round(totalDays / closedDeals.length);
+  },
+  formatContactName: (contact: any) => {
+    // Handle both contact object and contactId
+    if (!contact) return 'Aucun contact';
+    if (typeof contact === 'string') return `Contact ${contact}`;
+    if (contact.firstName || contact.lastName) {
+      return `${contact.firstName || ''} ${contact.lastName || ''}`.trim();
+    }
+    return contact.name || 'Contact sans nom';
   }
 };
 
@@ -98,9 +140,10 @@ interface SalesPipelineProps {
 }
 
 interface DealCardProps {
-  deal: Deal
-  onEdit?: (deal: Deal) => void
-  onView?: (deal: Deal) => void
+  deal: any  // Simplified for mock data
+  contacts: Contact[]
+  onEdit?: (deal: any) => void
+  onView?: (deal: any) => void
   onMove?: (dealId: string, stage: DealStage) => void
   className?: string
 }
@@ -113,11 +156,12 @@ interface PipelineStageProps {
     color: string
     probability: number
   }
-  deals: Deal[]
+  deals: any[]  // Simplified for mock data
+  contacts: Contact[]
   onDrop?: (dealId: string, stage: DealStage) => void
   onAddDeal?: (stage: DealStage) => void
-  onDealEdit?: (deal: Deal) => void
-  onDealView?: (deal: Deal) => void
+  onDealEdit?: (deal: any) => void
+  onDealView?: (deal: any) => void
 }
 
 interface DealFormProps {
@@ -130,7 +174,7 @@ interface DealFormProps {
 }
 
 // Deal card component
-const DealCard: React.FC<DealCardProps> = ({ deal, onEdit, onView, onMove, className }) => {
+const DealCard: React.FC<DealCardProps> = ({ deal, contacts, onEdit, onView, onMove, className }) => {
   const [isDragging, setIsDragging] = useState(false)
   
   const daysUntilClose = CRMUtils.daysUntilClose(deal.expectedCloseDate)
@@ -172,7 +216,9 @@ const DealCard: React.FC<DealCardProps> = ({ deal, onEdit, onView, onMove, class
               {deal.name}
             </h4>
             <p className="text-xs text-muted-foreground mt-1">
-              {CRMUtils.formatContactName(deal.contact)}
+                              {CRMUtils.formatContactName(
+                  contacts.find(c => c.id === deal.contactId) || deal.contact || deal.contactId
+                )}
             </p>
             {deal.company && (
               <p className="text-xs text-muted-foreground">
@@ -305,6 +351,7 @@ const DealCard: React.FC<DealCardProps> = ({ deal, onEdit, onView, onMove, class
 const PipelineStage: React.FC<PipelineStageProps> = ({
   stage,
   deals,
+  contacts,
   onDrop,
   onAddDeal,
   onDealEdit,
@@ -408,6 +455,7 @@ const PipelineStage: React.FC<PipelineStageProps> = ({
             <DealCard
               key={deal.id}
               deal={deal}
+              contacts={contacts}
               onEdit={onDealEdit}
               onView={onDealView}
             />
@@ -701,11 +749,143 @@ const DEFAULT_PIPELINE: Pipeline = {
   updatedAt: new Date().toISOString()
 }
 
+// Mock deals for demonstration - simplified version
+const MOCK_DEALS: any[] = [
+  {
+    id: '1',
+    name: 'Contrat Entreprise ABC',
+    stage: 'lead',
+    value: { amount: 50000, currency: 'EUR' },
+    probability: 10,
+    priority: 'high',
+    contactId: '1',
+    companyId: '1',
+    ownerId: 'mock-user-admin',
+    expectedCloseDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    description: 'Nouveau contrat pour services IT',
+    tags: ['IT', 'Services'],
+    activities: [],
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '2',
+    name: 'Projet Migration Cloud XYZ',
+    stage: 'qualified',
+    value: { amount: 120000, currency: 'EUR' },
+    probability: 25,
+    priority: 'medium',
+    contactId: '2',
+    companyId: '2',
+    ownerId: 'mock-user-admin',
+    expectedCloseDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+    description: 'Migration infrastructure cloud',
+    tags: ['Cloud', 'Infrastructure'],
+    activities: [],
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '3',
+    name: 'Renouvellement Licence Software Corp',
+    stage: 'proposal',
+    value: { amount: 75000, currency: 'EUR' },
+    probability: 50,
+    priority: 'high',
+    contactId: '3',
+    companyId: '3',
+    ownerId: 'mock-user-admin',
+    expectedCloseDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+    description: 'Renouvellement annuel des licences',
+    tags: ['Renouvellement', 'Licences'],
+    activities: [],
+    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '4',
+    name: 'Consulting Transformation Digitale',
+    stage: 'negotiation',
+    value: { amount: 200000, currency: 'EUR' },
+    probability: 75,
+    priority: 'critical',
+    contactId: '4',
+    companyId: '4',
+    ownerId: 'mock-user-admin',
+    expectedCloseDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    description: 'Accompagnement transformation digitale sur 12 mois',
+    tags: ['Consulting', 'Digital'],
+    activities: [],
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+]
+
+// Mock contacts
+const MOCK_CONTACTS: Contact[] = [
+  {
+    id: '1',
+    firstName: 'Marie',
+    lastName: 'Dupont',
+    email: 'marie.dupont@abc.com',
+    phone: '+33 1 23 45 67 89',
+    companyId: '1',
+    position: 'Directrice IT',
+    isPrimary: true,
+    tags: ['Decision Maker'],
+    lastContactDate: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '2',
+    firstName: 'Jean',
+    lastName: 'Martin',
+    email: 'jean.martin@xyz.com',
+    phone: '+33 1 98 76 54 32',
+    companyId: '2',
+    position: 'CTO',
+    isPrimary: true,
+    tags: ['Technical', 'Decision Maker'],
+    lastContactDate: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '3',
+    firstName: 'Sophie',
+    lastName: 'Bernard',
+    email: 'sophie.bernard@software.com',
+    phone: '+33 1 11 22 33 44',
+    companyId: '3',
+    position: 'Responsable Achats',
+    isPrimary: true,
+    tags: ['Procurement'],
+    lastContactDate: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '4',
+    firstName: 'Pierre',
+    lastName: 'Dubois',
+    email: 'pierre.dubois@enterprise.com',
+    phone: '+33 1 55 66 77 88',
+    companyId: '4',
+    position: 'PDG',
+    isPrimary: true,
+    tags: ['Executive', 'Decision Maker'],
+    lastContactDate: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+]
+
 // Main Sales Pipeline component
 export const SalesPipeline: React.FC<SalesPipelineProps> = ({
   pipeline = DEFAULT_PIPELINE,
-  deals = [],
-  contacts = [],
+  deals = MOCK_DEALS,
+  contacts = MOCK_CONTACTS,
   isLoading = false,
   onCreateDeal,
   onUpdateDeal,
@@ -904,8 +1084,15 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
         {pipeline.stages.map((stage) => (
           <PipelineStage
             key={stage.id}
-            stage={stage}
-            deals={dealsByStage[stage.stage] || []}
+            stage={{
+              id: stage.id,
+              name: stage.name,
+              stage: stage.id as DealStage,
+              color: CRMUtils.getStageColor(stage.id),
+              probability: stage.probability
+            }}
+            deals={dealsByStage[stage.id as DealStage] || []}
+            contacts={contacts}
             onDrop={handleDealDrop}
             onAddDeal={handleAddDeal}
             onDealEdit={(deal) => {
@@ -950,9 +1137,16 @@ export const SalesPipeline: React.FC<SalesPipelineProps> = ({
                   <h3 className="font-medium mb-2">Contact</h3>
                   <div className="text-sm">
                     <div className="font-medium">
-                      {CRMUtils.formatContactName(selectedDeal.contact)}
+                      {CRMUtils.formatContactName(
+                        contacts.find(c => c.id === selectedDeal.contactId) || 
+                        selectedDeal.contact || 
+                        selectedDeal.contactId
+                      )}
                     </div>
-                    <div>{selectedDeal.contact.email}</div>
+                    <div>
+                      {(contacts.find(c => c.id === selectedDeal.contactId) || selectedDeal.contact)?.email || 
+                       'Email non disponible'}
+                    </div>
                     {selectedDeal.company && (
                       <div className="text-muted-foreground">{selectedDeal.company.name}</div>
                     )}
