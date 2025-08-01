@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@/contexts/theme-context';
 import { SupabaseAuthProvider } from '@/providers/supabase-auth-provider';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { useAuth } from '@/providers/supabase-auth-provider';
+import { useAuth } from '@/hooks/use-auth';
 import { Toaster } from 'sonner';
 import { AppStatus } from '@/components/AppStatus';
 import { ErrorBoundary } from '@/components/ErrorBoundary';

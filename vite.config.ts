@@ -74,7 +74,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'router': ['@tanstack/react-router'],
+          'router': ['react-router-dom'],
           'state': ['@tanstack/react-query', 'zustand', 'valtio'],
           'ui-core': [
             'framer-motion',
@@ -102,7 +102,7 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
-      '@tanstack/react-router',
+      'react-router-dom',
       '@tanstack/react-query',
       'framer-motion'
     ]
@@ -110,6 +110,10 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    hmr: {
+      port: 3000,
+      host: 'localhost'
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:5000',
