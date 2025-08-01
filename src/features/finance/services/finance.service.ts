@@ -31,6 +31,7 @@ import type {
   PaymentMethod
 } from '../types/finance.types'
 import { MOCK_INVOICES, MOCK_QUOTES, MOCK_CONTACTS, MOCK_PRODUCTS, MOCK_TAX_RATES } from '../mocks/finance.mocks'
+import { getAdaptedInvoices, toOfficialInvoice, toOfficialContact } from '../mocks/mock-adapters'
 
 // En mode développement, utiliser les mocks
 const IS_DEVELOPMENT = import.meta.env.DEV
@@ -134,26 +135,26 @@ export class FinanceService {
       // Simuler un délai réseau
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      let filteredInvoices = [...MOCK_INVOICES]
+      let adaptedInvoices = getAdaptedInvoices()
       
       // Appliquer les filtres
       if (params?.status && params.status.length > 0) {
-        filteredInvoices = filteredInvoices.filter(inv => 
+        adaptedInvoices = adaptedInvoices.filter(inv => 
           params.status!.includes(inv.status)
         )
       }
       
       if (params?.contactId) {
-        filteredInvoices = filteredInvoices.filter(inv => 
-          inv.contactId === params.contactId
+        adaptedInvoices = adaptedInvoices.filter(inv => 
+          inv.contact.id === params.contactId
         )
       }
       
       if (params?.search) {
         const searchLower = params.search.toLowerCase()
-        filteredInvoices = filteredInvoices.filter(inv => 
+        adaptedInvoices = adaptedInvoices.filter(inv => 
           inv.number.toLowerCase().includes(searchLower) ||
-          inv.contact?.name.toLowerCase().includes(searchLower)
+          inv.contact.name.toLowerCase().includes(searchLower)
         )
       }
       
@@ -161,11 +162,11 @@ export class FinanceService {
       const page = params?.page || 1
       const limit = params?.limit || 20
       const start = (page - 1) * limit
-      const paginatedInvoices = filteredInvoices.slice(start, start + limit)
+      const paginatedInvoices = adaptedInvoices.slice(start, start + limit)
       
       return {
         invoices: paginatedInvoices,
-        total: filteredInvoices.length,
+        total: adaptedInvoices.length,
         page,
         limit
       }
@@ -200,6 +201,16 @@ export class FinanceService {
    * Get invoice by ID
    */
   static async getInvoice(id: string): Promise<Invoice> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const adaptedInvoices = getAdaptedInvoices()
+      const invoice = adaptedInvoices.find(inv => inv.id === id)
+      if (invoice) {
+        return invoice
+      }
+      throw new Error('Invoice not found')
+    }
+    
     const response = await ky.get(this.ENDPOINTS.INVOICE_BY_ID(id)).json<Invoice>()
     return response
   }
@@ -212,28 +223,28 @@ export class FinanceService {
     if (import.meta.env.DEV) {
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      const newInvoice: Invoice = {
+      const mockContact = MOCK_CONTACTS.find(c => c.id === data.contactId) || MOCK_CONTACTS[0]
+      const newMockInvoice = {
         id: `inv-${Date.now()}`,
         number: `INV-2024-${String(MOCK_INVOICES.length + 1).padStart(4, '0')}`,
-        status: 'draft',
+        status: 'draft' as const,
         date: new Date().toISOString().split('T')[0],
         dueDate: data.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        contact: MOCK_CONTACTS.find(c => c.id === data.contactId),
+        contact: mockContact,
         contactId: data.contactId,
         items: data.items || [],
-        subtotalAmount: data.subtotalAmount || { amount: 0, currency: 'EUR' },
-        taxAmount: data.taxAmount || { amount: 0, currency: 'EUR' },
+        subtotalAmount: data.subtotal || { amount: 0, currency: 'EUR' },
+        taxAmount: data.totalTax || { amount: 0, currency: 'EUR' },
         totalAmount: data.totalAmount || { amount: 0, currency: 'EUR' },
         paidAmount: { amount: 0, currency: 'EUR' },
         remainingAmount: data.totalAmount || { amount: 0, currency: 'EUR' },
         notes: data.notes,
-        terms: data.terms,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       }
       
-      MOCK_INVOICES.push(newInvoice)
-      return newInvoice
+      MOCK_INVOICES.push(newMockInvoice)
+      return toOfficialInvoice(newMockInvoice)
     }
     
     const response = await ky.post(this.ENDPOINTS.INVOICES, {

@@ -2,9 +2,9 @@
 export { InventoryService } from './services/inventory.service'
 export { InventoryAnalyticsService } from './services/inventory-analytics.service'
 
-// Components (à implémenter)
-// export { ProductCatalog } from './components/ProductCatalog'
-// export { StockMovements } from './components/StockMovements'
+// Components
+export { ProductCatalog } from './components/ProductCatalog/ProductCatalog'
+export { StockMovements } from './components/StockMovements/StockMovements'
 // export { WarehouseManagement } from './components/WarehouseManagement'
 // export { PurchaseOrderManagement } from './components/PurchaseOrderManagement'
 // export { InventoryAnalytics } from './components/InventoryAnalytics'

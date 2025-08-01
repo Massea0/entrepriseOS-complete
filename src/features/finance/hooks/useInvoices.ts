@@ -15,7 +15,7 @@ export function useInvoices({ initialStatus = 'all' }: UseInvoicesProps = {}) {
   
   // Récupération des factures
   const {
-    data: invoices = [],
+    data,
     isLoading,
     error,
     refetch
@@ -24,6 +24,8 @@ export function useInvoices({ initialStatus = 'all' }: UseInvoicesProps = {}) {
     queryFn: () => FinanceService.getInvoices(),
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
+  
+  const invoices = data?.invoices || []
   
   // Filtrage des factures par statut
   const filteredInvoices = useMemo(() => {
