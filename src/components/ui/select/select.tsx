@@ -196,14 +196,19 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 export interface SelectProps
   extends VariantProps<typeof selectTriggerVariants> {
   /**
-   * Select options
+   * Select options (optional if using children)
    */
-  options: Array<{
+  options?: Array<{
     value: string
     label: string
     disabled?: boolean
     group?: string
   }>
+  
+  /**
+   * Children elements (for custom content like SelectItem components)
+   */
+  children?: React.ReactNode
   
   /**
    * Current value
@@ -302,6 +307,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
   (
     {
       options,
+      children,
       value,
       defaultValue,
       onValueChange,
@@ -330,16 +336,18 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       const groups: Record<string, typeof options> = {}
       const ungrouped: typeof options = []
       
-      options.forEach((option) => {
-        if (option.group) {
-          if (!groups[option.group]) {
-            groups[option.group] = []
+      if (options) {
+        options.forEach((option) => {
+          if (option.group) {
+            if (!groups[option.group]) {
+              groups[option.group] = []
+            }
+            groups[option.group].push(option)
+          } else {
+            ungrouped.push(option)
           }
-          groups[option.group].push(option)
-        } else {
-          ungrouped.push(option)
-        }
-      })
+        })
+      }
       
       return { groups, ungrouped }
     }, [options])
@@ -367,27 +375,13 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {/* Ungrouped options */}
-          {groupedOptions.ungrouped.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
-              {option.label}
-            </SelectItem>
-          ))}
-          
-          {/* Grouped options */}
-          {Object.entries(groupedOptions.groups).map(([group, groupOptions], index) => (
-            <React.Fragment key={group}>
-              {(index > 0 || groupedOptions.ungrouped.length > 0) && (
-                <SelectSeparator />
-              )}
-              <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                {group}
-              </div>
-              {groupOptions.map((option) => (
+          {/* If children are provided, use them; otherwise render options */}
+          {children ? (
+            children
+          ) : (
+            <>
+              {/* Ungrouped options */}
+              {groupedOptions.ungrouped.map((option) => (
                 <SelectItem
                   key={option.value}
                   value={option.value}
@@ -396,8 +390,29 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   {option.label}
                 </SelectItem>
               ))}
-            </React.Fragment>
-          ))}
+              
+              {/* Grouped options */}
+              {Object.entries(groupedOptions.groups).map(([group, groupOptions], index) => (
+                <React.Fragment key={group}>
+                  {(index > 0 || groupedOptions.ungrouped.length > 0) && (
+                    <SelectSeparator />
+                  )}
+                  <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                    {group}
+                  </div>
+                  {groupOptions.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      disabled={option.disabled}
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </React.Fragment>
+              ))}
+            </>
+          )}
         </SelectContent>
       </SelectRoot>
     )
