@@ -69,6 +69,9 @@ const CRMUtils = {
     };
     return colors[priority] || 'bg-gray-100 text-gray-800';
   },
+  getDealPriorityColor: (priority: string) => {
+    return CRMUtils.getPriorityColor(priority);
+  },
   calculateDealScore: (deal: any) => {
     // Simple scoring based on value and probability
     const valueScore = Math.min(deal.value / 100000, 1) * 50;
