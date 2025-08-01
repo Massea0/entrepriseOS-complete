@@ -3,7 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Euro, TrendingUp, FileText, CreditCard } from 'lucide-react';
-import { InvoiceManagement } from '../components/InvoiceManagement';
+import { InvoiceManagement } from '../components/InvoiceManagementNew'
+import { MOCK_CONTACTS, MOCK_PRODUCTS, MOCK_TAX_RATES } from '../mocks/finance.mocks';
 
 export default function FinanceDashboard() {
   return (
@@ -82,7 +83,11 @@ export default function FinanceDashboard() {
         </TabsList>
 
         <TabsContent value="invoices" className="space-y-4">
-          <InvoiceManagement />
+          <InvoiceManagement 
+            contacts={MOCK_CONTACTS}
+            products={MOCK_PRODUCTS}
+            taxRates={MOCK_TAX_RATES}
+          />
         </TabsContent>
 
         <TabsContent value="quotes" className="space-y-4">

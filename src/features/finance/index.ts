@@ -2,7 +2,7 @@
 export { FinanceService, FinanceUtils } from './services/finance.service'
 
 // Components
-export { InvoiceManagement } from './components/InvoiceManagement'
+export { InvoiceManagement } from './components/InvoiceManagementNew'
 
 // Types
 export type {

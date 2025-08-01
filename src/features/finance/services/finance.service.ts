@@ -30,6 +30,10 @@ import type {
   PaymentStatus,
   PaymentMethod
 } from '../types/finance.types'
+import { MOCK_INVOICES, MOCK_QUOTES, MOCK_CONTACTS, MOCK_PRODUCTS, MOCK_TAX_RATES } from '../mocks/finance.mocks'
+
+// En mode développement, utiliser les mocks
+const IS_DEVELOPMENT = import.meta.env.DEV
 
 /**
  * Finance Service
@@ -125,6 +129,49 @@ export class FinanceService {
     page?: number
     limit?: number
   }): Promise<{ invoices: Invoice[]; total: number; page: number; limit: number }> {
+    // En mode développement, utiliser les mocks
+    if (import.meta.env.DEV) {
+      // Simuler un délai réseau
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      let filteredInvoices = [...MOCK_INVOICES]
+      
+      // Appliquer les filtres
+      if (params?.status && params.status.length > 0) {
+        filteredInvoices = filteredInvoices.filter(inv => 
+          params.status!.includes(inv.status)
+        )
+      }
+      
+      if (params?.contactId) {
+        filteredInvoices = filteredInvoices.filter(inv => 
+          inv.contactId === params.contactId
+        )
+      }
+      
+      if (params?.search) {
+        const searchLower = params.search.toLowerCase()
+        filteredInvoices = filteredInvoices.filter(inv => 
+          inv.number.toLowerCase().includes(searchLower) ||
+          inv.contact?.name.toLowerCase().includes(searchLower)
+        )
+      }
+      
+      // Pagination
+      const page = params?.page || 1
+      const limit = params?.limit || 20
+      const start = (page - 1) * limit
+      const paginatedInvoices = filteredInvoices.slice(start, start + limit)
+      
+      return {
+        invoices: paginatedInvoices,
+        total: filteredInvoices.length,
+        page,
+        limit
+      }
+    }
+    
+    // Code API réel
     const searchParams = new URLSearchParams()
     
     if (params) {
@@ -161,6 +208,34 @@ export class FinanceService {
    * Create new invoice
    */
   static async createInvoice(data: CreateInvoiceRequest): Promise<Invoice> {
+    // En mode développement, utiliser les mocks
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      const newInvoice: Invoice = {
+        id: `inv-${Date.now()}`,
+        number: `INV-2024-${String(MOCK_INVOICES.length + 1).padStart(4, '0')}`,
+        status: 'draft',
+        date: new Date().toISOString().split('T')[0],
+        dueDate: data.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        contact: MOCK_CONTACTS.find(c => c.id === data.contactId),
+        contactId: data.contactId,
+        items: data.items || [],
+        subtotalAmount: data.subtotalAmount || { amount: 0, currency: 'EUR' },
+        taxAmount: data.taxAmount || { amount: 0, currency: 'EUR' },
+        totalAmount: data.totalAmount || { amount: 0, currency: 'EUR' },
+        paidAmount: { amount: 0, currency: 'EUR' },
+        remainingAmount: data.totalAmount || { amount: 0, currency: 'EUR' },
+        notes: data.notes,
+        terms: data.terms,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+      
+      MOCK_INVOICES.push(newInvoice)
+      return newInvoice
+    }
+    
     const response = await ky.post(this.ENDPOINTS.INVOICES, {
       json: data
     }).json<Invoice>()
@@ -171,6 +246,16 @@ export class FinanceService {
    * Update invoice
    */
   static async updateInvoice(id: string, data: Partial<Invoice>): Promise<Invoice> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const index = MOCK_INVOICES.findIndex(inv => inv.id === id)
+      if (index !== -1) {
+        MOCK_INVOICES[index] = { ...MOCK_INVOICES[index], ...data, updatedAt: new Date().toISOString() }
+        return MOCK_INVOICES[index]
+      }
+      throw new Error('Invoice not found')
+    }
+    
     const response = await ky.patch(this.ENDPOINTS.INVOICE_BY_ID(id), {
       json: data
     }).json<Invoice>()
@@ -181,6 +266,16 @@ export class FinanceService {
    * Delete invoice
    */
   static async deleteInvoice(id: string): Promise<void> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const index = MOCK_INVOICES.findIndex(inv => inv.id === id)
+      if (index !== -1) {
+        MOCK_INVOICES.splice(index, 1)
+        return
+      }
+      throw new Error('Invoice not found')
+    }
+    
     await ky.delete(this.ENDPOINTS.INVOICE_BY_ID(id))
   }
 
@@ -193,6 +288,17 @@ export class FinanceService {
     cc?: string[]
     bcc?: string[]
   }): Promise<void> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const invoice = MOCK_INVOICES.find(inv => inv.id === id)
+      if (invoice && invoice.status === 'draft') {
+        invoice.status = 'sent'
+        invoice.updatedAt = new Date().toISOString()
+        return
+      }
+      throw new Error('Invoice not found or not in draft status')
+    }
+    
     await ky.post(this.ENDPOINTS.SEND_INVOICE(id), {
       json: options || {}
     })
@@ -201,18 +307,40 @@ export class FinanceService {
   /**
    * Mark invoice as paid
    */
-  static async markInvoiceAsPaid(id: string, paymentData: CreatePaymentRequest): Promise<void> {
+  static async markInvoiceAsPaid(id: string, paymentData?: Partial<CreatePaymentRequest>): Promise<void> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const invoice = MOCK_INVOICES.find(inv => inv.id === id)
+      if (invoice) {
+        invoice.status = 'paid'
+        invoice.paidAmount = invoice.totalAmount
+        invoice.remainingAmount = { amount: 0, currency: invoice.totalAmount.currency }
+        invoice.updatedAt = new Date().toISOString()
+        return
+      }
+      throw new Error('Invoice not found')
+    }
+    
     await ky.post(this.ENDPOINTS.MARK_PAID(id), {
-      json: paymentData
+      json: paymentData || {}
     })
   }
 
   /**
    * Generate invoice PDF
    */
-  static async generateInvoicePDF(id: string): Promise<{ url: string }> {
-    const response = await ky.post(this.ENDPOINTS.INVOICE_PDF(id)).json<{ url: string }>()
-    return response
+  static async generateInvoicePDF(id: string): Promise<Blob> {
+    if (import.meta.env.DEV) {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      // Créer un blob PDF factice
+      const pdfContent = `%PDF-1.4
+Invoice ${id}
+Mock PDF Content`;
+      return new Blob([pdfContent], { type: 'application/pdf' })
+    }
+    
+    const response = await ky.get(this.ENDPOINTS.INVOICE_PDF(id))
+    return response.blob()
   }
 
   // Quote Management
