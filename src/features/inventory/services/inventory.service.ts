@@ -1066,9 +1066,7 @@ export class InventoryService {
     
     return response
   }
-}
 
-export class InventoryService {
   /**
    * Transfer stock between warehouses
    */
