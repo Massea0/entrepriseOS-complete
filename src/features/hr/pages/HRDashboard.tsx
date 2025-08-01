@@ -7,8 +7,11 @@ import { RecruitmentDashboard } from '../components/RecruitmentDashboard';
 import { OrgChart } from '../components/OrgChart';
 import { Button } from '@/components/ui/button';
 import { Plus, Users, Calendar, Building2, UserPlus } from 'lucide-react';
+import { useHRMock } from '../hooks/use-hr-mock';
 
 export default function HRDashboard() {
+  const { orgChart, departments, employees, isLoading } = useHRMock();
+  
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -61,7 +64,11 @@ export default function HRDashboard() {
         </TabsContent>
 
         <TabsContent value="orgchart" className="space-y-4">
-          <OrgChart />
+          <OrgChart 
+            orgChart={orgChart}
+            departments={departments}
+            isLoading={isLoading}
+          />
         </TabsContent>
 
         <TabsContent value="recruitment" className="space-y-4">
