@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -8,6 +8,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { useAuth } from '@/providers/supabase-auth-provider';
 import { Toaster } from 'sonner';
 import { AppStatus } from '@/components/AppStatus';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Pages - on va les créer progressivement
 const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
@@ -32,6 +33,13 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Loading screen component
+const LoadingScreen = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 // Placeholder pour les autres pages
 const ComingSoon = ({ title }: { title: string }) => (
@@ -63,45 +71,34 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <SupabaseAuthProvider>
-            <React.Suspense
-              fallback={
-                <div className="flex items-center justify-center min-h-screen">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                </div>
-              }
-            >
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/test" element={<TestPage />} />
-                
-                <Route
-                  path="/*"
-                  element={
-                    <PrivateRoute>
-                      <AppLayout>
-                        <Routes>
-                          <Route path="/" element={<DashboardPage />} />
-                          <Route path="/hr" element={<HRDashboard />} />
-                          <Route path="/crm" element={<CRMDashboard />} />
-                          <Route path="/finance" element={<FinanceDashboard />} />
-                          <Route path="/projects" element={<ProjectsDashboard />} />
-                          <Route path="/inventory" element={<InventoryDashboard />} />
-                          <Route path="/ai" element={<AIDashboard />} />
-                          <Route path="/settings" element={<ComingSoon title="Paramètres" />} />
-                        </Routes>
-                      </AppLayout>
-                    </PrivateRoute>
-                  }
-                />
-              </Routes>
-            </React.Suspense>
-            
-            <Toaster 
-              position="bottom-right"
-              richColors
-              expand={true}
-              duration={4000}
-            />
+            <ErrorBoundary>
+              <Suspense fallback={<LoadingScreen />}>
+                <Routes>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/test" element={<TestPage />} />
+                  <Route
+                    path="/*"
+                    element={
+                      <PrivateRoute>
+                        <AppLayout>
+                          <Routes>
+                            <Route path="/" element={<DashboardPage />} />
+                            <Route path="/hr" element={<HRDashboard />} />
+                            <Route path="/crm" element={<CRMDashboard />} />
+                            <Route path="/finance" element={<FinanceDashboard />} />
+                            <Route path="/projects" element={<ProjectsDashboard />} />
+                            <Route path="/inventory" element={<InventoryDashboard />} />
+                            <Route path="/ai" element={<AIDashboard />} />
+                            <Route path="/settings" element={<ComingSoon title="Paramètres" />} />
+                          </Routes>
+                        </AppLayout>
+                      </PrivateRoute>
+                    }
+                  />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
+            <Toaster position="top-right" />
             <AppStatus />
           </SupabaseAuthProvider>
         </ThemeProvider>
