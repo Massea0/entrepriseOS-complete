@@ -53,6 +53,8 @@ const ComingSoon = ({ title }: { title: string }) => (
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  
+  console.log('PrivateRoute - user:', user, 'loading:', loading);
 
   if (loading) {
     return (

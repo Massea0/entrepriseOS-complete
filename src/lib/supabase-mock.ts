@@ -1,8 +1,22 @@
 // Mock Supabase client pour le développement local
 
-// État global du mock
+// État global du mock avec persistance localStorage
 let mockUser: any = null;
 let mockSession: any = null;
+
+// Charger la session depuis localStorage au démarrage
+if (typeof window !== 'undefined') {
+  const savedSession = localStorage.getItem('mock-supabase-session');
+  if (savedSession) {
+    try {
+      const parsed = JSON.parse(savedSession);
+      mockSession = parsed.session;
+      mockUser = parsed.user;
+    } catch (e) {
+      console.error('Failed to parse saved session:', e);
+    }
+  }
+}
 
 // Base de données des utilisateurs test
 const testUsers: Record<string, { password: string; role: string; firstName: string; lastName: string }> = {
@@ -215,6 +229,15 @@ export const supabaseMock = {
           token_type: 'bearer',
           user: mockUser,
         };
+        
+        // Sauvegarder la session dans localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('mock-supabase-session', JSON.stringify({
+            session: mockSession,
+            user: mockUser
+          }));
+        }
+        
         return {
           data: { user: mockUser, session: mockSession },
           error: null,
@@ -252,6 +275,12 @@ export const supabaseMock = {
     signOut: async () => {
       mockUser = null;
       mockSession = null;
+      
+      // Effacer la session de localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('mock-supabase-session');
+      }
+      
       return { error: null };
     },
     
