@@ -1,11 +1,5 @@
-// index.ts
-// Export de tous les composants du module Finance
-
-// Composants Quote
+// Re-export all components from subfolders
 export * from './quotes'
-
-// Composants Contract (à venir)
-// export * from './contracts'
-
-// Dashboard Finance (à venir)
-// export * from './dashboard'
+export * from './devis'
+export * from './analytics'
+export * from './contracts'
