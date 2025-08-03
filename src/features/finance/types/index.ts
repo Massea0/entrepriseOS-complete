@@ -1,11 +1,19 @@
-// index.ts
-// Export de tous les types du module Finance
-
-// Types des devis
-export * from './quote.types'
-
-// Types des contrats
+// Export all finance types
+export * from './analytics.types'
+export * from './base.types'
 export * from './contract.types'
+export * from './invoice.types'
+export * from './quote.types'
+export * from './payment.types'
+export * from './pricing.types'
+
+// Re-export common types
+export type { Money } from './base.types'
+export type { Contact } from './base.types'
+export type { Invoice, InvoiceStatus } from './invoice.types'
+export type { Quote, QuoteStatus } from './quote.types'
+export type { Contract } from './contract.types'
+export type { PricingRecommendation } from './pricing.types'
 
 // Types communs finance
 export interface FinancialPrediction {
