@@ -71,6 +71,26 @@ export function useUpdateEmployee() {
 export function useHRStats() {
   const { user } = useAuth();
   
+  // Return mock data for demo - no backend API
+  return {
+    data: {
+      totalEmployees: 42,
+      departmentStats: [
+        { name: 'Commercial', profiles: { count: 12 } },
+        { name: 'Développement', profiles: { count: 8 } },
+        { name: 'Finance', profiles: { count: 6 } },
+        { name: 'RH', profiles: { count: 4 } },
+        { name: 'Direction', profiles: { count: 3 } }
+      ],
+      pendingLeaves: 5,
+      newEmployees: 3,
+    },
+    isLoading: false,
+    error: null
+  };
+  
+  // Original code commented for demo
+  /*
   return useSupabaseQuery(['hr-stats', user?.id], {
     queryFn: async (supabase) => {
       // Total des employés
@@ -112,6 +132,7 @@ export function useHRStats() {
     },
     enabled: !!user,
   });
+  */
 }
 
 // Hook pour les congés

@@ -567,8 +567,50 @@ export const useTimeTracking = (projectId?: string): UseTimeTrackingReturn => {
 
   // Load entries when project changes
   React.useEffect(() => {
-    const params = projectId ? { projectId } : {}
-    store.loadEntries(params).catch(console.error)
+    // Temporarily disabled for demo - no backend API
+    // const params = projectId ? { projectId } : {}
+    // store.loadEntries(params).catch(console.error)
+    
+    // Use mock data for demo
+    const mockEntries: TimeEntry[] = [
+      {
+        id: '1',
+        taskId: 'task-1',
+        userId: 'user-1',
+        projectId: projectId || 'project-1',
+        startTime: new Date('2025-01-08T09:00:00'),
+        endTime: new Date('2025-01-08T12:30:00'),
+        duration: 210, // 3h30 en minutes
+        description: 'Développement du module de facturation',
+        billable: true,
+        hourlyRate: 75,
+        date: new Date('2025-01-08'),
+        createdAt: new Date('2025-01-08T09:00:00'),
+        updatedAt: new Date('2025-01-08T12:30:00'),
+        isRunning: false,
+        type: 'development'
+      },
+      {
+        id: '2',
+        taskId: 'task-2',
+        userId: 'user-1',
+        projectId: projectId || 'project-1',
+        startTime: new Date('2025-01-08T14:00:00'),
+        endTime: new Date('2025-01-08T16:30:00'),
+        duration: 150, // 2h30 en minutes
+        description: 'Réunion client et spécifications',
+        billable: true,
+        hourlyRate: 75,
+        date: new Date('2025-01-08'),
+        createdAt: new Date('2025-01-08T14:00:00'),
+        updatedAt: new Date('2025-01-08T16:30:00'),
+        isRunning: false,
+        type: 'meeting'
+      }
+    ]
+    
+    store.setEntries(projectId ? mockEntries.filter(e => e.projectId === projectId) : mockEntries)
+    store.setLoading(false)
   }, [projectId])
 
   // Utility functions
