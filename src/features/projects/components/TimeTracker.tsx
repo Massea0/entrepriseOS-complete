@@ -45,6 +45,14 @@ const ProjectUtils = {
       other: 'bg-gray-100 text-gray-800'
     };
     return colors[type] || 'bg-gray-100 text-gray-800';
+  },
+  calculateBillableAmount: (entries: TimeEntry[]) => {
+    return entries
+      .filter(entry => entry.billable && entry.hourlyRate)
+      .reduce((total, entry) => {
+        const hours = entry.duration / 60
+        return total + (hours * (entry.hourlyRate || 0))
+      }, 0)
   }
 };
 
