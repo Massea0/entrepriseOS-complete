@@ -71,6 +71,12 @@ docs/
 └── API.md            # Documentation API
 ```
 
+## 🗄️ Configuration de la base de données
+
+**IMPORTANT** : Avant de démarrer l'application, vous devez configurer Supabase.
+
+👉 **Suivez le guide complet : [SUPABASE_SETUP.md](SUPABASE_SETUP.md)**
+
 ## 🚀 Quick Start
 
 ### 1. Installation
