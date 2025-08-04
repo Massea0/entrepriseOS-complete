@@ -114,10 +114,17 @@ export default defineConfig({
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
       '@radix-ui/react-select',
-      '@radix-ui/react-tabs'
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-label',
+      '@radix-ui/react-popover'
     ],
     exclude: [],
-    force: true
+    force: false
   },
   server: {
     port: 3000,
