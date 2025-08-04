@@ -108,14 +108,28 @@ export default defineConfig({
       'framer-motion',
       'react-day-picker',
       'date-fns',
-      'date-fns/locale'
+      'date-fns/locale',
+      'lucide-react',
+      'zustand',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs'
     ],
-    exclude: []
+    exclude: [],
+    force: true
   },
   server: {
     port: 3000,
     host: true,
+    fs: {
+      strict: false
+    },
+    watch: {
+      usePolling: true
+    },
     hmr: {
+      overlay: false,
       port: 3000,
       host: 'localhost'
     },
