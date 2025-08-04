@@ -1,4 +1,5 @@
 import { ky } from '@/services/api'
+import { InventoryMockService } from './inventory-mock.service'
 import type {
   Product,
   Warehouse,
@@ -25,6 +26,9 @@ import type {
   ABCClassification,
   StockStatus
 } from '../types/inventory.types'
+
+// Utiliser le mode mock
+const USE_MOCK = true
 import type {
   Supplier,
   PurchaseOrder,
@@ -275,6 +279,10 @@ export class InventoryService {
    * Get all warehouses
    */
   static async getWarehouses(): Promise<Warehouse[]> {
+    if (USE_MOCK) {
+      const result = await InventoryMockService.getWarehouses()
+      return result.data
+    }
     const response = await ky.get(this.ENDPOINTS.WAREHOUSES).json<Warehouse[]>()
     return response
   }
@@ -283,6 +291,9 @@ export class InventoryService {
    * Get warehouse by ID
    */
   static async getWarehouse(id: string): Promise<Warehouse> {
+    if (USE_MOCK) {
+      return InventoryMockService.getWarehouse(id)
+    }
     const response = await ky.get(this.ENDPOINTS.WAREHOUSE_BY_ID(id)).json<Warehouse>()
     return response
   }
@@ -291,6 +302,9 @@ export class InventoryService {
    * Create warehouse
    */
   static async createWarehouse(data: CreateWarehouseRequest): Promise<Warehouse> {
+    if (USE_MOCK) {
+      return InventoryMockService.createWarehouse(data as any)
+    }
     const response = await ky.post(this.ENDPOINTS.WAREHOUSES, {
       json: data
     }).json<Warehouse>()

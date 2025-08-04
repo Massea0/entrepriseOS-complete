@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProductCatalog } from '../components/ProductCatalog/ProductCatalog'
 import { ProductsList } from '../components/ProductsList'
 import { StockMovements } from '../components/StockMovements/StockMovements'
+import { WarehouseManager } from '../components/WarehouseManager/WarehouseManagerSimple'
 import { MOCK_PRODUCTS, MOCK_STOCK_MOVEMENTS } from '../mocks/inventory.mocks'
 import type { Product, StockMovement, StockMovementType } from '../types/inventory.types'
 
@@ -75,14 +76,7 @@ export default function InventoryDashboard() {
         </TabsContent>
         
         <TabsContent value="warehouses" className="space-y-4">
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Gestion des Entrepôts
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Module en cours de développement
-            </p>
-          </div>
+          <WarehouseManager />
         </TabsContent>
         
         <TabsContent value="analytics" className="space-y-4">
