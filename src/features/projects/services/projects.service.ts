@@ -24,45 +24,45 @@ import type {
 export class ProjectsService {
   private static readonly ENDPOINTS = {
     // Projects
-    PROJECTS: '/projects',
-    PROJECT_BY_ID: (id: string) => `/projects/${id}`,
-    PROJECT_MEMBERS: (id: string) => `/projects/${id}/members`,
-    PROJECT_ANALYTICS: (id: string) => `/projects/${id}/analytics`,
+    PROJECTS: 'projects',
+    PROJECT_BY_ID: (id: string) => `projects/${id}`,
+    PROJECT_MEMBERS: (id: string) => `projects/${id}/members`,
+    PROJECT_ANALYTICS: (id: string) => `projects/${id}/analytics`,
     
     // Tasks
-    TASKS: '/tasks',
-    PROJECT_TASKS: (projectId: string) => `/projects/${projectId}/tasks`,
-    TASK_BY_ID: (id: string) => `/tasks/${id}`,
-    TASK_COMMENTS: (id: string) => `/tasks/${id}/comments`,
-    TASK_ATTACHMENTS: (id: string) => `/tasks/${id}/attachments`,
-    TASK_DEPENDENCIES: (id: string) => `/tasks/${id}/dependencies`,
+    TASKS: 'tasks',
+    PROJECT_TASKS: (projectId: string) => `projects/${projectId}/tasks`,
+    TASK_BY_ID: (id: string) => `tasks/${id}`,
+    TASK_COMMENTS: (id: string) => `tasks/${id}/comments`,
+    TASK_ATTACHMENTS: (id: string) => `tasks/${id}/attachments`,
+    TASK_DEPENDENCIES: (id: string) => `tasks/${id}/dependencies`,
     
     // Kanban
-    KANBAN_BOARD: (projectId: string) => `/projects/${projectId}/kanban`,
-    KANBAN_MOVE_TASK: (projectId: string) => `/projects/${projectId}/kanban/move`,
+    KANBAN_BOARD: (projectId: string) => `projects/${projectId}/kanban`,
+    KANBAN_MOVE_TASK: (projectId: string) => `projects/${projectId}/kanban/move`,
     
     // Time tracking
-    TIME_ENTRIES: '/time-entries',
-    PROJECT_TIME_ENTRIES: (projectId: string) => `/projects/${projectId}/time-entries`,
-    TIME_ENTRY_BY_ID: (id: string) => `/time-entries/${id}`,
-    START_TIMER: '/time-entries/start',
-    STOP_TIMER: (id: string) => `/time-entries/${id}/stop`,
+    TIME_ENTRIES: 'time-entries',
+    PROJECT_TIME_ENTRIES: (projectId: string) => `projects/${projectId}/time-entries`,
+    TIME_ENTRY_BY_ID: (id: string) => `time-entries/${id}`,
+    START_TIMER: 'time-entries/start',
+    STOP_TIMER: (id: string) => `time-entries/${id}/stop`,
     
     // Templates
-    TEMPLATES: '/project-templates',
-    TEMPLATE_BY_ID: (id: string) => `/project-templates/${id}`,
+    TEMPLATES: 'project-templates',
+    TEMPLATE_BY_ID: (id: string) => `project-templates/${id}`,
     
     // Labels
-    LABELS: '/task-labels',
-    PROJECT_LABELS: (projectId: string) => `/projects/${projectId}/labels`,
+    LABELS: 'task-labels',
+    PROJECT_LABELS: (projectId: string) => `projects/${projectId}/labels`,
     
     // Search and filters
-    SEARCH_PROJECTS: '/projects/search',
-    SEARCH_TASKS: '/tasks/search',
+    SEARCH_PROJECTS: 'projects/search',
+    SEARCH_TASKS: 'tasks/search',
     
     // Reports
-    TIME_REPORTS: '/reports/time',
-    PROJECT_REPORTS: '/reports/projects'
+    TIME_REPORTS: 'reports/time',
+    PROJECT_REPORTS: 'reports/projects'
   } as const
 
   // Project Management
