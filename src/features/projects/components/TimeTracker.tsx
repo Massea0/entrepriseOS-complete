@@ -12,7 +12,7 @@ import { cn } from '@/utils/cn'
 import { 
   PlayIcon, 
   PauseIcon, 
-  StopIcon,
+  Square as StopIcon,
   ClockIcon,
   CalendarIcon,
   DollarSignIcon,
