@@ -23,3 +23,6 @@ export type {
   PopoverPortalProps,
   PopoverArrowProps
 } from './popover.types'
+
+// Variants
+export * from './popover.variants'
