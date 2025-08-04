@@ -15,8 +15,16 @@ export const formatCurrency = (amount: number, currency: Currency = 'EUR'): stri
 }
 
 // Formatage de dates
-export const formatDate = (date: string | Date): string => {
+export const formatDate = (date: string | Date | null | undefined): string => {
+  if (!date) return '-'
+  
   const d = new Date(date)
+  
+  // Vérifier si la date est valide
+  if (isNaN(d.getTime())) {
+    return '-'
+  }
+  
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: '2-digit',
@@ -25,8 +33,16 @@ export const formatDate = (date: string | Date): string => {
 }
 
 // Formatage date complète
-export const formatDateTime = (date: string | Date): string => {
+export const formatDateTime = (date: string | Date | null | undefined): string => {
+  if (!date) return '-'
+  
   const d = new Date(date)
+  
+  // Vérifier si la date est valide
+  if (isNaN(d.getTime())) {
+    return '-'
+  }
+  
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: '2-digit',
@@ -86,8 +102,16 @@ export const generateInvoiceNumber = (lastNumber?: string): string => {
 }
 
 // Calcul des jours de retard
-export const calculateDaysOverdue = (dueDate: string | Date): number => {
+export const calculateDaysOverdue = (dueDate: string | Date | null | undefined): number => {
+  if (!dueDate) return 0
+  
   const due = new Date(dueDate)
+  
+  // Vérifier si la date est valide
+  if (isNaN(due.getTime())) {
+    return 0
+  }
+  
   const today = new Date()
   const diffTime = today.getTime() - due.getTime()
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
