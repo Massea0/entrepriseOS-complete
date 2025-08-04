@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { CalendarIcon, Plus, X, Loader2 } from 'lucide-react'
+import { Calendar as CalendarIcon, Plus, X, Loader2 } from 'lucide-react'
 import type { ContractTemplate } from '../../types/contract.types'
 
 interface ContractEditorProps {

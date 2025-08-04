@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { Plus, Trash2, ImageIcon as Image, Tag as TagIcon } from 'lucide-react'
+import { Plus, Trash2, Image, Tag as TagIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

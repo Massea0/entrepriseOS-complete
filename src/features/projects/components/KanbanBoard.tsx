@@ -10,16 +10,16 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Modal, ModalContent, ModalHeader, ModalTitle } from '@/components/ui/modal'
 import { cn } from '@/utils/cn'
 import { 
-  PlusIcon, 
-  MoreVerticalIcon,
-  CalendarIcon,
-  UserIcon,
-  ClockIcon,
-  AlertCircleIcon,
-  FlagIcon,
-  MessageSquareIcon,
-  PaperclipIcon,
-  ArrowRightIcon
+  Plus as PlusIcon, 
+  MoreVertical as MoreVerticalIcon,
+  Calendar as CalendarIcon,
+  User as UserIcon,
+  Clock as ClockIcon,
+  AlertCircle as AlertCircleIcon,
+  Flag as FlagIcon,
+  MessageSquare as MessageSquareIcon,
+  Paperclip as PaperclipIcon,
+  ArrowRight as ArrowRightIcon
 } from 'lucide-react'
 import type { Task, TaskStatus, Priority, KanbanColumn } from '../types/projects.types'
 import { useProject } from '../hooks/useProjects'
@@ -57,6 +57,16 @@ const ProjectUtils = {
     const now = new Date();
     const days = Math.floor((due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     return days;
+  },
+  groupTasksByStatus: (tasks: Task[]): Record<string, Task[]> => {
+    return tasks.reduce((groups, task) => {
+      const status = task.status
+      if (!groups[status]) {
+        groups[status] = []
+      }
+      groups[status].push(task)
+      return groups
+    }, {} as Record<string, Task[]>)
   }
 };
 
