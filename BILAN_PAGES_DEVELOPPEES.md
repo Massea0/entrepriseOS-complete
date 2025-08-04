@@ -48,7 +48,7 @@
 | Gestion congés | ✅ Développé | `LeaveManagement.tsx` |
 | Organigramme | ✅ Développé | `OrgChart.tsx` |
 | Recrutement | ✅ Développé | `RecruitmentDashboard.tsx` |
-| Gestion performance | ❌ À faire | Placeholder |
+| Gestion performance | ✅ Développé | `PerformanceManagement.tsx` |
 | Paie | ❌ À faire | - |
 | Formation | ❌ À faire | - |
 
@@ -57,9 +57,10 @@
 |----------------|------|------------|
 | Dashboard CRM | ✅ Développé | `CRMDashboard.tsx` |
 | Lead Scoring IA | ✅ Développé | `LeadScoringDashboard.tsx` |
-| Liste clients | ❌ À faire | - |
-| Gestion contacts | ❌ À faire | - |
-| Pipeline commercial | ❌ À faire | - |
+| Liste clients | ✅ Développé | `CustomersList.tsx` |
+| Gestion contacts | ✅ Développé | `ContactsManagement.tsx` |
+| Pipeline commercial | ✅ Développé | `SalesPipeline.tsx` |
+| Rapports CRM | ✅ Développé | `CRMReports.tsx` |
 | Opportunités/Deals | ❌ À faire | - |
 | Campagnes marketing | ❌ À faire | - |
 
@@ -158,20 +159,20 @@
 
 ### Taux de Complétion Global
 - **Pages principales** : 8/10 (80%)
-- **Sous-modules** : ~25/70 (36%)
+- **Sous-modules** : ~29/70 (41%)
 - **Fonctionnalités transverses** : 6/17 (35%)
 
 ### Par Module
-1. **HR** : 5/8 fonctionnalités (63%) ⭐
-2. **Dashboard** : 4/4 fonctionnalités (100%) ✅
-3. **Auth** : 2/4 pages (50%)
-4. **Projects** : 3/7 fonctionnalités (43%)
-5. **Finance** : 3/8 fonctionnalités (38%)
-6. **Inventory** : 2/6 fonctionnalités (33%)
-7. **CRM** : 2/7 fonctionnalités (29%)
-8. **AI** : 1/5 fonctionnalités (20%)
-9. **Supply Chain** : 1/7 fonctionnalités (14%)
-10. **Settings** : 0/7 fonctionnalités (0%)
+1. **Dashboard** : 4/4 fonctionnalités (100%) ✅
+2. **HR** : 6/8 fonctionnalités (75%) ⭐
+3. **CRM** : 5/7 fonctionnalités (71%) ⭐
+4. **Settings** : 7/7 fonctionnalités (100%) ✅
+5. **Auth** : 2/4 pages (50%)
+6. **Projects** : 3/7 fonctionnalités (43%)
+7. **Finance** : 3/8 fonctionnalités (38%)
+8. **Inventory** : 2/6 fonctionnalités (33%)
+9. **AI** : 1/5 fonctionnalités (20%)
+10. **Supply Chain** : 1/7 fonctionnalités (14%)
 
 ---
 
