@@ -16,9 +16,17 @@ export const kyInstance = ky.create({
     beforeRequest: [
       async request => {
         // Ajouter le token d'authentification si disponible
-        const token = localStorage.getItem('access_token')
-        if (token) {
-          request.headers.set('Authorization', `Bearer ${token}`)
+        try {
+          // Essayer de récupérer le token Supabase
+          const { supabase } = await import('@/lib/supabase');
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          if (session?.access_token) {
+            request.headers.set('Authorization', `Bearer ${session.access_token}`);
+            request.headers.set('apikey', import.meta.env.VITE_SUPABASE_ANON_KEY || '');
+          }
+        } catch (error) {
+          console.error('Error getting auth token:', error);
         }
       }
     ],
