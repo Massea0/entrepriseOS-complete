@@ -59,6 +59,7 @@ export default defineConfig({
       '@/lib': path.resolve(__dirname, './src/lib'),
       '@/styles': path.resolve(__dirname, './src/styles'),
       '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/services': path.resolve(__dirname, './src/services'),
     }
   },
   build: {
