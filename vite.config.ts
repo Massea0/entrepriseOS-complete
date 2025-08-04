@@ -105,8 +105,12 @@ export default defineConfig({
       'react-dom',
       'react-router-dom',
       '@tanstack/react-query',
-      'framer-motion'
-    ]
+      'framer-motion',
+      'react-day-picker',
+      'date-fns',
+      'date-fns/locale'
+    ],
+    exclude: []
   },
   server: {
     port: 3000,
