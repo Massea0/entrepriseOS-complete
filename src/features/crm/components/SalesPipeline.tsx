@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
-import { RefreshCwIcon, FilterIcon } from 'lucide-react'
+import { RefreshCw as RefreshCwIcon, Filter as FilterIcon } from 'lucide-react'
 import type { Deal, Pipeline, Contact } from '../types/crm.types'
 
 // Import des composants extraits

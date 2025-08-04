@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
-import { ChevronUpIcon } from 'lucide-react'
+import { ChevronUp as ChevronUpIcon } from 'lucide-react'
 import type {
   TableProps,
   TableHeaderProps,

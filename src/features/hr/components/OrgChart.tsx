@@ -22,7 +22,7 @@ import {
   CalendarIcon,
   TrendingUpIcon,
   UserPlusIcon,
-  FilterIcon,
+  Filter as FilterIcon,
   ExpandIcon,
   ShrinkIcon
 } from 'lucide-react'

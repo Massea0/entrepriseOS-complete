@@ -9,7 +9,7 @@ import { Button } from '../button'
 import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select'
 import { Input } from '../input'
-import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, ClockIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, Clock as ClockIcon } from 'lucide-react'
 
 import type {
   DatePickerProps,

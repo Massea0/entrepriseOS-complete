@@ -10,16 +10,16 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/utils/cn'
 import { 
-  PlayIcon, 
-  PauseIcon, 
+  Play as PlayIcon, 
+  Pause as PauseIcon, 
   Square as StopIcon,
-  ClockIcon,
-  CalendarIcon,
-  DollarSignIcon,
-  PlusIcon,
-  EditIcon,
-  TrashIcon,
-  FilterIcon
+  Clock as ClockIcon,
+  Calendar as CalendarIcon,
+  DollarSign as DollarSignIcon,
+  Plus as PlusIcon,
+  Edit as EditIcon,
+  Trash as TrashIcon,
+  Filter as FilterIcon
 } from 'lucide-react'
 import type { TimeEntry, TimeEntryType } from '../types/projects.types'
 import { useTimeTracking } from '../hooks/useProjects'

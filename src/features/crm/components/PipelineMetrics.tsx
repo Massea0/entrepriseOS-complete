@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { TrendingUpIcon, TrendingDownIcon, DollarSignIcon, TargetIcon, ClockIcon, BarChartIcon } from 'lucide-react'
+import { TrendingUp as TrendingUpIcon, TrendingDown as TrendingDownIcon, DollarSign as DollarSignIcon, Target as TargetIcon, Clock as ClockIcon, BarChart as BarChartIcon } from 'lucide-react'
 import { CRMUtils } from '../utils/crm.utils'
 
 interface PipelineMetricsProps {

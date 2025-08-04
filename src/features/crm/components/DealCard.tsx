@@ -6,7 +6,7 @@ import {
   MoreVerticalIcon,
   EditIcon,
   EyeIcon,
-  DollarSignIcon,
+  DollarSign as DollarSignIcon,
   CalendarIcon,
   AlertCircleIcon
 } from 'lucide-react'

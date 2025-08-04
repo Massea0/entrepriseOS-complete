@@ -20,7 +20,7 @@ import {
   PlusIcon,
   SettingsIcon,
   SearchIcon,
-  FilterIcon,
+  Filter as FilterIcon,
   GridIcon,
   ListIcon
 } from 'lucide-react'

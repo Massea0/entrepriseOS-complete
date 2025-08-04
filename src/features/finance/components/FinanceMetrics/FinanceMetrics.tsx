@@ -3,10 +3,10 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { 
-  DollarSignIcon, 
-  TrendingUpIcon, 
-  AlertCircleIcon,
-  CheckCircleIcon 
+  DollarSign as DollarSignIcon, 
+  TrendingUp as TrendingUpIcon, 
+  AlertCircle as AlertCircleIcon,
+  CheckCircle as CheckCircleIcon 
 } from 'lucide-react'
 import type { Money } from '../../types/finance.types'
 import { formatCurrency } from '../../utils/finance.utils'

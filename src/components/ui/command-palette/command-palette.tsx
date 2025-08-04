@@ -6,7 +6,7 @@ import { cn } from '@/utils/cn'
 import { Modal, ModalContent } from '../modal'
 import { Badge } from '../badge'
 import { Spinner } from '../spinner'
-import { SearchIcon, CommandIcon } from 'lucide-react'
+import { Search as SearchIcon, Command as CommandIcon } from 'lucide-react'
 
 import type {
   CommandPaletteProps,

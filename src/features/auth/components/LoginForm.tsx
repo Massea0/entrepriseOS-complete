@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Alert } from '@/components/ui/alert'
 import { toast } from '@/components/ui/toast'
-import { EyeIcon, EyeOffIcon, MailIcon, LockIcon, ShieldIcon } from 'lucide-react'
+import { Eye as EyeIcon, EyeOff as EyeOffIcon, Mail as MailIcon, Lock as LockIcon, Shield as ShieldIcon } from 'lucide-react'
 
 // Validation schema
 const loginSchema = z.object({
