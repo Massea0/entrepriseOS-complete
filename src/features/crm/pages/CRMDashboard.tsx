@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Plus, Users, Building2, Target, TrendingUp, Phone, Mail, Calendar } from 'lucide-react';
 import { SalesPipeline } from '../components/SalesPipeline';
+import { CustomersList } from '../components/CustomersList';
+import { LeadScoringDashboard } from '../components/LeadScoringDashboard';
 
 export default function CRMDashboard() {
   return (
@@ -73,9 +75,10 @@ export default function CRMDashboard() {
       </div>
 
       <Tabs defaultValue="pipeline" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
           <TabsTrigger value="clients">Clients</TabsTrigger>
+          <TabsTrigger value="leads">Leads IA</TabsTrigger>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
           <TabsTrigger value="activities">Activités</TabsTrigger>
           <TabsTrigger value="reports">Rapports</TabsTrigger>
@@ -86,17 +89,11 @@ export default function CRMDashboard() {
         </TabsContent>
 
         <TabsContent value="clients" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Clients</CardTitle>
-              <CardDescription>Gérez votre base de clients</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                Module de gestion des clients à implémenter
-              </div>
-            </CardContent>
-          </Card>
+          <CustomersList />
+        </TabsContent>
+
+        <TabsContent value="leads" className="space-y-4">
+          <LeadScoringDashboard />
         </TabsContent>
 
         <TabsContent value="contacts" className="space-y-4">

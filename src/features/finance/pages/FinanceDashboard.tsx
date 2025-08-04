@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Plus, Euro, TrendingUp, FileText, CreditCard } from 'lucide-react';
 import { InvoiceManagement } from '../components/InvoiceManagementNew'
+import { QuotesManagement } from '../components/QuotesManagement';
 import { MOCK_CONTACTS, MOCK_PRODUCTS, MOCK_TAX_RATES } from '../mocks/finance.mocks';
 
 export default function FinanceDashboard() {
@@ -91,17 +92,7 @@ export default function FinanceDashboard() {
         </TabsContent>
 
         <TabsContent value="quotes" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Devis en cours</CardTitle>
-              <CardDescription>Gérez vos devis et propositions commerciales</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                Module de gestion des devis à implémenter
-              </div>
-            </CardContent>
-          </Card>
+          <QuotesManagement />
         </TabsContent>
 
         <TabsContent value="payments" className="space-y-4">

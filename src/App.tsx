@@ -14,6 +14,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 const TestPage = React.lazy(() => import('@/pages/TestPage'));
+const SettingsPage = React.lazy(() => import('@/pages/SettingsPage'));
 
 // Modules
 const HRDashboard = React.lazy(() => import('@/features/hr/pages/HRDashboard'));
@@ -91,7 +92,7 @@ export function App() {
                             <Route path="/projects" element={<ProjectsDashboard />} />
                             <Route path="/inventory" element={<InventoryDashboard />} />
                             <Route path="/ai" element={<AIDashboard />} />
-                            <Route path="/settings" element={<ComingSoon title="Paramètres" />} />
+                            <Route path="/settings" element={<SettingsPage />} />
                           </Routes>
                         </AppLayout>
                       </PrivateRoute>

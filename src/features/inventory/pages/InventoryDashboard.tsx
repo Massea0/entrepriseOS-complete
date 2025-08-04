@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProductCatalog } from '../components/ProductCatalog/ProductCatalog'
+import { ProductsList } from '../components/ProductsList'
 import { StockMovements } from '../components/StockMovements/StockMovements'
 import { MOCK_PRODUCTS, MOCK_STOCK_MOVEMENTS } from '../mocks/inventory.mocks'
 import type { Product, StockMovement, StockMovementType } from '../types/inventory.types'
@@ -62,13 +63,7 @@ export default function InventoryDashboard() {
         </TabsList>
         
         <TabsContent value="products" className="space-y-4">
-          <ProductCatalog 
-            products={MOCK_PRODUCTS}
-            onAddProduct={handleAddProduct}
-            onEditProduct={handleEditProduct}
-            onDeleteProduct={handleDeleteProduct}
-            onViewStock={handleViewStock}
-          />
+          <ProductsList />
         </TabsContent>
         
         <TabsContent value="movements" className="space-y-4">

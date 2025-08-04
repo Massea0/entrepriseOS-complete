@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, FolderOpen, Clock, CheckCircle, AlertCircle, Calendar, BarChart3 } from 'lucide-react';
 import { KanbanBoard } from '../components/KanbanBoard';
 import { TimeTracker } from '../components/TimeTracker';
+import { ProjectsList } from '../components/ProjectsList';
 
 export default function ProjectsDashboard() {
   return (
@@ -88,17 +89,7 @@ export default function ProjectsDashboard() {
         </TabsContent>
 
         <TabsContent value="projects" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Liste des projets</CardTitle>
-              <CardDescription>Vue d'ensemble de tous vos projets</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                Module de liste des projets à implémenter
-              </div>
-            </CardContent>
-          </Card>
+          <ProjectsList />
         </TabsContent>
 
         <TabsContent value="tasks" className="space-y-4">
