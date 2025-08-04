@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "clean:dev": "./scripts/clean-dev.sh",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
