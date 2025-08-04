@@ -6,6 +6,8 @@ import { Plus, Users, Building2, Target, TrendingUp, Phone, Mail, Calendar } fro
 import { SalesPipeline } from '../components/SalesPipeline';
 import { CustomersList } from '../components/CustomersList';
 import { LeadScoringDashboard } from '../components/LeadScoringDashboard';
+import { ContactsManagement } from '../components/ContactsManagement';
+import { CRMReports } from '../components/CRMReports';
 
 export default function CRMDashboard() {
   return (
@@ -97,17 +99,7 @@ export default function CRMDashboard() {
         </TabsContent>
 
         <TabsContent value="contacts" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contacts</CardTitle>
-              <CardDescription>Gérez vos contacts professionnels</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                Module de gestion des contacts à implémenter
-              </div>
-            </CardContent>
-          </Card>
+          <ContactsManagement />
         </TabsContent>
 
         <TabsContent value="activities" className="space-y-4">
@@ -146,17 +138,7 @@ export default function CRMDashboard() {
         </TabsContent>
 
         <TabsContent value="reports" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Rapports CRM</CardTitle>
-              <CardDescription>Analyses et statistiques</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                Module de rapports CRM à implémenter
-              </div>
-            </CardContent>
-          </Card>
+          <CRMReports />
         </TabsContent>
       </Tabs>
     </div>

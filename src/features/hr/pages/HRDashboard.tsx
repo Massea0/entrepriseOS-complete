@@ -5,6 +5,7 @@ import { EmployeeList } from '../components/EmployeeList';
 import { LeaveManagement } from '../components/LeaveManagement';
 import { RecruitmentDashboard } from '../components/RecruitmentDashboard';
 import { OrgChart } from '../components/OrgChart';
+import { PerformanceManagement } from '../components/PerformanceManagement';
 import { Button } from '@/components/ui/button';
 import { Plus, Users, Calendar, Building2, UserPlus } from 'lucide-react';
 import { useHRMock } from '../hooks/use-hr-mock';
@@ -76,9 +77,7 @@ export default function HRDashboard() {
         </TabsContent>
 
         <TabsContent value="performance" className="space-y-4">
-          <div className="text-center py-12 text-muted-foreground">
-            Module de gestion de la performance à implémenter
-          </div>
+          <PerformanceManagement />
         </TabsContent>
       </Tabs>
     </div>
