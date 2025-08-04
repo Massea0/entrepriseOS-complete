@@ -227,6 +227,35 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
+  
+  /* Fix pour le positionnement des dropdowns */
+  /* Force les dropdowns à être positionnés correctement */
+  [data-radix-popper-content-wrapper] {
+    @apply !z-[9999];
+  }
+  
+  /* S'assurer que les portals sont au-dessus de la navigation */
+  [data-radix-portal] {
+    @apply !z-[9999];
+  }
+  
+  /* Fix pour les dropdowns Radix UI */
+  [role="menu"],
+  [role="listbox"],
+  [data-state="open"] {
+    @apply !z-[9999];
+  }
+  
+  /* S'assurer que la navigation n'interfère pas */
+  nav {
+    @apply relative z-40;
+  }
+  
+  /* Fix spécifique pour les dropdown-menu de Radix */
+  [data-radix-menu-content],
+  [data-radix-dropdown-menu-content] {
+    @apply !z-[9999] !pointer-events-auto;
+  }
 }
 
 /* Keyframes */

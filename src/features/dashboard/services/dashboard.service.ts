@@ -9,6 +9,10 @@ import type {
   WidgetDataResponse
 } from '../types/dashboard.types'
 import type { UserRole } from '@/features/auth/types/auth.types'
+import { DashboardMockService, WidgetDataCacheMock } from './dashboard-mock.service'
+
+// Vérifier si nous sommes en mode mock
+const USE_MOCK = true // Mode mock activé
 
 /**
  * Dashboard Service
@@ -46,6 +50,9 @@ export class DashboardService {
    * Get all dashboards for current user
    */
   static async getDashboards(): Promise<DashboardListResponse> {
+    if (USE_MOCK) {
+      return DashboardMockService.getDashboards()
+    }
     const response = await ky.get(this.ENDPOINTS.DASHBOARDS).json<DashboardListResponse>()
     return response
   }
@@ -54,6 +61,9 @@ export class DashboardService {
    * Get dashboard by ID
    */
   static async getDashboard(id: string): Promise<DashboardConfig> {
+    if (USE_MOCK) {
+      return DashboardMockService.getDashboard(id)
+    }
     const response = await ky.get(this.ENDPOINTS.DASHBOARD_BY_ID(id)).json<DashboardConfig>()
     return response
   }
@@ -62,6 +72,9 @@ export class DashboardService {
    * Get default dashboard for user role
    */
   static async getDashboardByRole(role: UserRole): Promise<DashboardConfig> {
+    if (USE_MOCK) {
+      return DashboardMockService.getDashboardByRole(role)
+    }
     const response = await ky.get(this.ENDPOINTS.DASHBOARD_BY_ROLE(role)).json<DashboardConfig>()
     return response
   }
@@ -213,6 +226,9 @@ export class DashboardService {
    * Refresh widget data
    */
   static async refreshWidgetData(widgetId: string): Promise<WidgetDataResponse> {
+    if (USE_MOCK) {
+      return DashboardMockService.refreshWidgetData(widgetId)
+    }
     const response = await ky.post(`${this.ENDPOINTS.WIDGET_DATA(widgetId)}/refresh`).json<WidgetDataResponse>()
     return response
   }
@@ -239,6 +255,9 @@ export class DashboardService {
    * Get role-specific analytics
    */
   static async getAnalyticsByRole(role: UserRole): Promise<DashboardAnalytics> {
+    if (USE_MOCK) {
+      return DashboardMockService.getAnalyticsByRole(role)
+    }
     const response = await ky.get(this.ENDPOINTS.ANALYTICS_BY_ROLE(role)).json<DashboardAnalytics>()
     return response
   }
@@ -249,6 +268,9 @@ export class DashboardService {
    * Subscribe to dashboard updates
    */
   static async subscribeToUpdates(dashboardId: string): Promise<void> {
+    if (USE_MOCK) {
+      return DashboardMockService.subscribeToUpdates(dashboardId)
+    }
     await ky.post(this.ENDPOINTS.SUBSCRIBE, {
       json: { dashboardId }
     })
@@ -258,6 +280,9 @@ export class DashboardService {
    * Unsubscribe from dashboard updates
    */
   static async unsubscribeFromUpdates(dashboardId: string): Promise<void> {
+    if (USE_MOCK) {
+      return DashboardMockService.unsubscribeFromUpdates(dashboardId)
+    }
     await ky.post(this.ENDPOINTS.UNSUBSCRIBE, {
       json: { dashboardId }
     })
@@ -523,4 +548,9 @@ export class DashboardTemplates {
       updatedAt: new Date()
     }
   }
+}
+
+// En mode mock, remplacer WidgetDataCache par WidgetDataCacheMock
+if (USE_MOCK) {
+  Object.assign(WidgetDataCache, WidgetDataCacheMock)
 }
