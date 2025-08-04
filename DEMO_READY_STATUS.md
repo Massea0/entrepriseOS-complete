@@ -2,10 +2,12 @@
 
 ## ✅ PROBLÈMES RÉSOLUS
 
-### 1. Erreurs API 500
+### 1. Erreurs API 500 et 401
 - ✅ **Corrigé** : Désactivé les appels API manquants
-- ✅ **Mock data** ajoutée pour Time Tracker et HR Stats
+- ✅ **Mock data** ajoutée pour Time Tracker, HR Stats, Employés et Congés
 - ✅ **Cache Vite** nettoyé après corruption
+- ✅ **Erreurs 401 Supabase** : Remplacé par données mockées
+- ✅ **Token auth** : Corrigé pour utiliser le token Supabase
 
 ### 2. Modules manquants
 - ✅ **HR - Gestion de la performance** : Implémenté avec évaluations, objectifs et feedback 360°
@@ -29,6 +31,8 @@
 
 ### 📊 Données de démonstration
 - **42 employés** répartis dans 5 départements
+- **3 employés détaillés** avec positions et départements (Marie Laurent, Jean Dupont, Sophie Chen)
+- **2 demandes de congés** (1 en attente, 1 approuvée)
 - **6 clients actifs** avec détails complets
 - **4 contacts professionnels** avec tags et historique
 - **Time entries** pour démontrer le suivi temps
