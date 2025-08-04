@@ -6,7 +6,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Utiliser la vraie instance Supabase
-const USE_MOCK = false; // Connexion réelle à Supabase
+const USE_MOCK = true; // Mode mock activé pour éviter les risques
 
 if (USE_MOCK) {
   console.log('🔧 Mode développement : Utilisation du mock Supabase');
