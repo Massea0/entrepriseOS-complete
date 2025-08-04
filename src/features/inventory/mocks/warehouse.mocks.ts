@@ -120,16 +120,16 @@ export const MOCK_ZONES: Record<string, WarehouseZone[]> = {
 export const MOCK_WAREHOUSES: Warehouse[] = [
   {
     id: 'warehouse-1',
-    name: 'Entrepôt Principal Paris',
-    code: 'WH-PAR-001',
+    name: 'Entrepôt Principal Lagos',
+    code: 'WH-LAG-001',
     type: 'main',
     status: 'active',
     address: {
-      street: '123 Avenue des Champs-Élysées',
-      city: 'Paris',
-      postalCode: '75008',
-      country: 'France',
-      coordinates: { lat: 48.8698, lng: 2.3077 }
+      street: '45 Victoria Island Business District',
+      city: 'Lagos',
+      postalCode: '101241',
+      country: 'Nigeria',
+      coordinates: { lat: 6.4281, lng: 3.4219 }
     },
     capacity: {
       total: 3200,
@@ -146,9 +146,9 @@ export const MOCK_WAREHOUSES: Warehouse[] = [
       saturday: { open: '08:00', close: '16:00' },
       sunday: { open: 'closed', close: 'closed' }
     },
-    contactEmail: 'warehouse.paris@entreprise.com',
-    contactPhone: '+33 1 23 45 67 89',
-    manager: 'Jean Dupont',
+    contactEmail: 'warehouse.lagos@entreprise.com',
+    contactPhone: '+234 1 234 5678',
+    manager: 'Adebayo Ogundimu',
     features: [
       'temperature_controlled',
       'security_24_7',
@@ -171,16 +171,16 @@ export const MOCK_WAREHOUSES: Warehouse[] = [
   },
   {
     id: 'warehouse-2',
-    name: 'Centre de Distribution Lyon',
-    code: 'WH-LYO-001',
+    name: 'Centre de Distribution Casablanca',
+    code: 'WH-CAS-001',
     type: 'distribution',
     status: 'active',
     address: {
-      street: '45 Rue de la République',
-      city: 'Lyon',
-      postalCode: '69002',
-      country: 'France',
-      coordinates: { lat: 45.7640, lng: 4.8357 }
+      street: '127 Boulevard Zerktouni',
+      city: 'Casablanca',
+      postalCode: '20250',
+      country: 'Maroc',
+      coordinates: { lat: 33.5731, lng: -7.5898 }
     },
     capacity: {
       total: 1000,
@@ -197,9 +197,9 @@ export const MOCK_WAREHOUSES: Warehouse[] = [
       saturday: { open: '08:00', close: '18:00' },
       sunday: { open: 'closed', close: 'closed' }
     },
-    contactEmail: 'warehouse.lyon@entreprise.com',
-    contactPhone: '+33 4 78 90 12 34',
-    manager: 'Marie Martin',
+    contactEmail: 'warehouse.casablanca@entreprise.com',
+    contactPhone: '+212 522 123 456',
+    manager: 'Fatima El Amrani',
     features: [
       'loading_dock',
       'forklift',
@@ -219,16 +219,16 @@ export const MOCK_WAREHOUSES: Warehouse[] = [
   },
   {
     id: 'warehouse-3',
-    name: 'Point de Transit Marseille',
-    code: 'WH-MAR-001',
+    name: 'Point de Transit Nairobi',
+    code: 'WH-NAI-001',
     type: 'transit',
     status: 'active',
     address: {
-      street: '78 Boulevard du Port',
-      city: 'Marseille',
-      postalCode: '13002',
-      country: 'France',
-      coordinates: { lat: 43.2965, lng: 5.3698 }
+      street: '89 Mombasa Road Industrial Area',
+      city: 'Nairobi',
+      postalCode: '00100',
+      country: 'Kenya',
+      coordinates: { lat: -1.2921, lng: 36.8219 }
     },
     capacity: {
       total: 150,
@@ -245,9 +245,9 @@ export const MOCK_WAREHOUSES: Warehouse[] = [
       saturday: { open: '24h', close: '24h' },
       sunday: { open: '24h', close: '24h' }
     },
-    contactEmail: 'transit.marseille@entreprise.com',
-    contactPhone: '+33 4 91 23 45 67',
-    manager: 'Pierre Bernard',
+    contactEmail: 'transit.nairobi@entreprise.com',
+    contactPhone: '+254 20 123 4567',
+    manager: 'John Kamau',
     features: [
       'security_24_7',
       'cross_docking',
