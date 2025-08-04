@@ -43,77 +43,77 @@ const IS_DEVELOPMENT = import.meta.env.DEV
 export class FinanceService {
   private static readonly ENDPOINTS = {
     // Invoices
-    INVOICES: '/invoices',
-    INVOICE_BY_ID: (id: string) => `/invoices/${id}`,
-    SEND_INVOICE: (id: string) => `/invoices/${id}/send`,
-    MARK_PAID: (id: string) => `/invoices/${id}/mark-paid`,
-    INVOICE_PDF: (id: string) => `/invoices/${id}/pdf`,
+    INVOICES: 'invoices',
+    INVOICE_BY_ID: (id: string) => `invoices/${id}`,
+    SEND_INVOICE: (id: string) => `invoices/${id}/send`,
+    MARK_PAID: (id: string) => `invoices/${id}/mark-paid`,
+    INVOICE_PDF: (id: string) => `invoices/${id}/pdf`,
     
     // Quotes
-    QUOTES: '/quotes',
-    QUOTE_BY_ID: (id: string) => `/quotes/${id}`,
-    SEND_QUOTE: (id: string) => `/quotes/${id}/send`,
-    CONVERT_QUOTE: (id: string) => `/quotes/${id}/convert`,
-    QUOTE_PDF: (id: string) => `/quotes/${id}/pdf`,
+    QUOTES: 'quotes',
+    QUOTE_BY_ID: (id: string) => `quotes/${id}`,
+    SEND_QUOTE: (id: string) => `quotes/${id}/send`,
+    CONVERT_QUOTE: (id: string) => `quotes/${id}/convert`,
+    QUOTE_PDF: (id: string) => `quotes/${id}/pdf`,
     
     // Expenses
-    EXPENSES: '/expenses',
-    EXPENSE_BY_ID: (id: string) => `/expenses/${id}`,
-    SUBMIT_EXPENSE: (id: string) => `/expenses/${id}/submit`,
-    APPROVE_EXPENSE: (id: string) => `/expenses/${id}/approve`,
-    REJECT_EXPENSE: (id: string) => `/expenses/${id}/reject`,
-    EXPENSE_RECEIPT: (id: string) => `/expenses/${id}/receipt`,
+    EXPENSES: 'expenses',
+    EXPENSE_BY_ID: (id: string) => `expenses/${id}`,
+    SUBMIT_EXPENSE: (id: string) => `expenses/${id}/submit`,
+    APPROVE_EXPENSE: (id: string) => `expenses/${id}/approve`,
+    REJECT_EXPENSE: (id: string) => `expenses/${id}/reject`,
+    EXPENSE_RECEIPT: (id: string) => `expenses/${id}/receipt`,
     
     // Payments
-    PAYMENTS: '/payments',
-    PAYMENT_BY_ID: (id: string) => `/payments/${id}`,
-    REFUND_PAYMENT: (id: string) => `/payments/${id}/refund`,
+    PAYMENTS: 'payments',
+    PAYMENT_BY_ID: (id: string) => `payments/${id}`,
+    REFUND_PAYMENT: (id: string) => `payments/${id}/refund`,
     
     // Contacts
-    CONTACTS: '/contacts',
-    CONTACT_BY_ID: (id: string) => `/contacts/${id}`,
-    CUSTOMERS: '/contacts/customers',
-    SUPPLIERS: '/contacts/suppliers',
+    CONTACTS: 'contacts',
+    CONTACT_BY_ID: (id: string) => `contacts/${id}`,
+    CUSTOMERS: 'contacts/customers',
+    SUPPLIERS: 'contacts/suppliers',
     
     // Products
-    PRODUCTS: '/products',
-    PRODUCT_BY_ID: (id: string) => `/products/${id}`,
-    PRODUCT_CATEGORIES: '/product-categories',
+    PRODUCTS: 'products',
+    PRODUCT_BY_ID: (id: string) => `products/${id}`,
+    PRODUCT_CATEGORIES: 'product-categories',
     
     // Tax management
-    TAX_RATES: '/tax-rates',
-    TAX_RATE_BY_ID: (id: string) => `/tax-rates/${id}`,
+    TAX_RATES: 'tax-rates',
+    TAX_RATE_BY_ID: (id: string) => `tax-rates/${id}`,
     
     // Accounting
-    ACCOUNTS: '/accounts',
-    ACCOUNT_BY_ID: (id: string) => `/accounts/${id}`,
-    JOURNAL_ENTRIES: '/journal-entries',
-    TRANSACTIONS: '/transactions',
+    ACCOUNTS: 'accounts',
+    ACCOUNT_BY_ID: (id: string) => `accounts/${id}`,
+    JOURNAL_ENTRIES: 'journal-entries',
+    TRANSACTIONS: 'transactions',
     
     // Reports
-    REPORTS: '/reports',
-    REPORT_BY_ID: (id: string) => `/reports/${id}`,
-    GENERATE_REPORT: '/reports/generate',
+    REPORTS: 'reports',
+    REPORT_BY_ID: (id: string) => `reports/${id}`,
+    GENERATE_REPORT: 'reports/generate',
     
     // Analytics
-    ANALYTICS: '/analytics/finance',
-    DASHBOARD_WIDGETS: '/analytics/finance/widgets',
+    ANALYTICS: 'analytics/finance',
+    DASHBOARD_WIDGETS: 'analytics/finance/widgets',
     
     // Currency and exchange rates
-    CURRENCIES: '/currencies',
-    EXCHANGE_RATES: '/exchange-rates',
+    CURRENCIES: 'currencies',
+    EXCHANGE_RATES: 'exchange-rates',
     
     // Budget and forecasting
-    BUDGETS: '/budgets',
-    BUDGET_BY_ID: (id: string) => `/budgets/${id}`,
+    BUDGETS: 'budgets',
+    BUDGET_BY_ID: (id: string) => `budgets/${id}`,
     
     // Recurring transactions
-    RECURRING: '/recurring-transactions',
-    RECURRING_BY_ID: (id: string) => `/recurring-transactions/${id}`,
+    RECURRING: 'recurring-transactions',
+    RECURRING_BY_ID: (id: string) => `recurring-transactions/${id}`,
     
     // File uploads
-    UPLOAD_RECEIPT: '/uploads/receipt',
-    UPLOAD_ATTACHMENT: '/uploads/attachment'
+    UPLOAD_RECEIPT: 'uploads/receipt',
+    UPLOAD_ATTACHMENT: 'uploads/attachment'
   } as const
 
   // Invoice Management

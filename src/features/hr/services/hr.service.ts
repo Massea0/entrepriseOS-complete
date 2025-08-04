@@ -27,60 +27,60 @@ import type {
 export class HRService {
   private static readonly ENDPOINTS = {
     // Employees
-    EMPLOYEES: '/employees',
-    EMPLOYEE_BY_ID: (id: string) => `/employees/${id}`,
-    EMPLOYEE_AVATAR: (id: string) => `/employees/${id}/avatar`,
-    EMPLOYEE_DEACTIVATE: (id: string) => `/employees/${id}/deactivate`,
+    EMPLOYEES: 'employees',
+    EMPLOYEE_BY_ID: (id: string) => `employees/${id}`,
+    EMPLOYEE_AVATAR: (id: string) => `employees/${id}/avatar`,
+    EMPLOYEE_DEACTIVATE: (id: string) => `employees/${id}/deactivate`,
     
     // Departments
-    DEPARTMENTS: '/departments',
-    DEPARTMENT_BY_ID: (id: string) => `/departments/${id}`,
-    DEPARTMENT_EMPLOYEES: (id: string) => `/departments/${id}/employees`,
+    DEPARTMENTS: 'departments',
+    DEPARTMENT_BY_ID: (id: string) => `departments/${id}`,
+    DEPARTMENT_EMPLOYEES: (id: string) => `departments/${id}/employees`,
     
     // Positions
-    POSITIONS: '/positions',
-    POSITION_BY_ID: (id: string) => `/positions/${id}`,
+    POSITIONS: 'positions',
+    POSITION_BY_ID: (id: string) => `positions/${id}`,
     
     // Organizational Chart
-    ORG_CHART: '/org-chart',
-    ORG_CHART_DEPARTMENT: (departmentId: string) => `/org-chart/department/${departmentId}`,
+    ORG_CHART: 'org-chart',
+    ORG_CHART_DEPARTMENT: (departmentId: string) => `org-chart/department/${departmentId}`,
     
     // Leave Management
-    LEAVE_REQUESTS: '/leave-requests',
-    LEAVE_REQUEST_BY_ID: (id: string) => `/leave-requests/${id}`,
-    LEAVE_BALANCES: '/leave-balances',
-    EMPLOYEE_LEAVE_BALANCES: (employeeId: string) => `/employees/${employeeId}/leave-balances`,
-    APPROVE_LEAVE: (id: string) => `/leave-requests/${id}/approve`,
-    REJECT_LEAVE: (id: string) => `/leave-requests/${id}/reject`,
-    CANCEL_LEAVE: (id: string) => `/leave-requests/${id}/cancel`,
+    LEAVE_REQUESTS: 'leave-requests',
+    LEAVE_REQUEST_BY_ID: (id: string) => `leave-requests/${id}`,
+    LEAVE_BALANCES: 'leave-balances',
+    EMPLOYEE_LEAVE_BALANCES: (employeeId: string) => `employees/${employeeId}/leave-balances`,
+    APPROVE_LEAVE: (id: string) => `leave-requests/${id}/approve`,
+    REJECT_LEAVE: (id: string) => `leave-requests/${id}/reject`,
+    CANCEL_LEAVE: (id: string) => `leave-requests/${id}/cancel`,
     
     // Attendance
-    ATTENDANCE: '/attendance',
-    EMPLOYEE_ATTENDANCE: (employeeId: string) => `/employees/${employeeId}/attendance`,
-    CLOCK_IN: '/attendance/clock-in',
-    CLOCK_OUT: '/attendance/clock-out',
+    ATTENDANCE: 'attendance',
+    EMPLOYEE_ATTENDANCE: (employeeId: string) => `employees/${employeeId}/attendance`,
+    CLOCK_IN: 'attendance/clock-in',
+    CLOCK_OUT: 'attendance/clock-out',
     
     // Performance Reviews
-    PERFORMANCE_REVIEWS: '/performance-reviews',
-    REVIEW_BY_ID: (id: string) => `/performance-reviews/${id}`,
-    EMPLOYEE_REVIEWS: (employeeId: string) => `/employees/${employeeId}/reviews`,
-    SUBMIT_REVIEW: (id: string) => `/performance-reviews/${id}/submit`,
+    PERFORMANCE_REVIEWS: 'performance-reviews',
+    REVIEW_BY_ID: (id: string) => `performance-reviews/${id}`,
+    EMPLOYEE_REVIEWS: (employeeId: string) => `employees/${employeeId}/reviews`,
+    SUBMIT_REVIEW: (id: string) => `performance-reviews/${id}/submit`,
     
     // Recruitment
-    JOB_POSTINGS: '/job-postings',
-    JOB_POSTING_BY_ID: (id: string) => `/job-postings/${id}`,
-    JOB_APPLICATIONS: '/job-applications',
-    APPLICATION_BY_ID: (id: string) => `/job-applications/${id}`,
-    POSTING_APPLICATIONS: (jobId: string) => `/job-postings/${jobId}/applications`,
-    SCHEDULE_INTERVIEW: (applicationId: string) => `/job-applications/${applicationId}/interviews`,
+    JOB_POSTINGS: 'job-postings',
+    JOB_POSTING_BY_ID: (id: string) => `job-postings/${id}`,
+    JOB_APPLICATIONS: 'job-applications',
+    APPLICATION_BY_ID: (id: string) => `job-applications/${id}`,
+    POSTING_APPLICATIONS: (jobId: string) => `job-postings/${jobId}/applications`,
+    SCHEDULE_INTERVIEW: (applicationId: string) => `job-applications/${applicationId}/interviews`,
     
     // Analytics
-    HR_ANALYTICS: '/hr/analytics',
-    DEPARTMENT_ANALYTICS: (departmentId: string) => `/hr/analytics/department/${departmentId}`,
+    HR_ANALYTICS: 'hr/analytics',
+    DEPARTMENT_ANALYTICS: (departmentId: string) => `hr/analytics/department/${departmentId}`,
     
     // Search
-    SEARCH_EMPLOYEES: '/employees/search',
-    EMPLOYEE_DIRECTORY: '/employees/directory'
+    SEARCH_EMPLOYEES: 'employees/search',
+    EMPLOYEE_DIRECTORY: 'employees/directory'
   } as const
 
   // Employee Management

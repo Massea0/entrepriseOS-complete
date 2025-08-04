@@ -17,27 +17,27 @@ import type { UserRole } from '@/features/auth/types/auth.types'
 export class DashboardService {
   private static readonly ENDPOINTS = {
     // Dashboard management
-    DASHBOARDS: '/dashboards',
-    DASHBOARD_BY_ID: (id: string) => `/dashboards/${id}`,
-    DASHBOARD_BY_ROLE: (role: UserRole) => `/dashboards/role/${role}`,
+    DASHBOARDS: 'dashboards',
+    DASHBOARD_BY_ID: (id: string) => `dashboards/${id}`,
+    DASHBOARD_BY_ROLE: (role: UserRole) => `dashboards/role/${role}`,
     
     // Layout management
-    LAYOUTS: (dashboardId: string) => `/dashboards/${dashboardId}/layouts`,
-    LAYOUT_BY_ID: (dashboardId: string, layoutId: string) => `/dashboards/${dashboardId}/layouts/${layoutId}`,
+    LAYOUTS: (dashboardId: string) => `dashboards/${dashboardId}/layouts`,
+    LAYOUT_BY_ID: (dashboardId: string, layoutId: string) => `dashboards/${dashboardId}/layouts/${layoutId}`,
     
     // Widget management
-    WIDGETS: (dashboardId: string) => `/dashboards/${dashboardId}/widgets`,
-    WIDGET_BY_ID: (dashboardId: string, widgetId: string) => `/dashboards/${dashboardId}/widgets/${widgetId}`,
-    WIDGET_DATA: (widgetId: string) => `/widgets/${widgetId}/data`,
-    WIDGET_TEMPLATES: '/widgets/templates',
+    WIDGETS: (dashboardId: string) => `dashboards/${dashboardId}/widgets`,
+    WIDGET_BY_ID: (dashboardId: string, widgetId: string) => `dashboards/${dashboardId}/widgets/${widgetId}`,
+    WIDGET_DATA: (widgetId: string) => `widgets/${widgetId}/data`,
+    WIDGET_TEMPLATES: 'widgets/templates',
     
     // Analytics
-    ANALYTICS: '/dashboard/analytics',
-    ANALYTICS_BY_ROLE: (role: UserRole) => `/dashboard/analytics/${role}`,
+    ANALYTICS: 'dashboard/analytics',
+    ANALYTICS_BY_ROLE: (role: UserRole) => `dashboard/analytics/${role}`,
     
     // Real-time updates
-    SUBSCRIBE: '/dashboard/subscribe',
-    UNSUBSCRIBE: '/dashboard/unsubscribe'
+    SUBSCRIBE: 'dashboard/subscribe',
+    UNSUBSCRIBE: 'dashboard/unsubscribe'
   } as const
 
   // Dashboard Management

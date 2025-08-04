@@ -57,107 +57,107 @@ import { stockMovementApi, purchaseOrderApi } from '../api/inventory.api';
 export class InventoryService {
   private static readonly ENDPOINTS = {
     // Products
-    PRODUCTS: '/inventory/products',
-    PRODUCT_BY_ID: (id: string) => `/inventory/products/${id}`,
-    PRODUCT_VARIANTS: (id: string) => `/inventory/products/${id}/variants`,
-    PRODUCT_CATEGORIES: '/inventory/product-categories',
-    PRODUCT_SEARCH: '/inventory/products/search',
-    PRODUCT_IMPORT: '/inventory/products/import',
-    PRODUCT_EXPORT: '/inventory/products/export',
-    PRODUCT_DUPLICATE: (id: string) => `/inventory/products/${id}/duplicate`,
+    PRODUCTS: 'inventory/products',
+    PRODUCT_BY_ID: (id: string) => `inventory/products/${id}`,
+    PRODUCT_VARIANTS: (id: string) => `inventory/products/${id}/variants`,
+    PRODUCT_CATEGORIES: 'inventory/product-categories',
+    PRODUCT_SEARCH: 'inventory/products/search',
+    PRODUCT_IMPORT: 'inventory/products/import',
+    PRODUCT_EXPORT: 'inventory/products/export',
+    PRODUCT_DUPLICATE: (id: string) => `inventory/products/${id}/duplicate`,
     
     // Warehouses
-    WAREHOUSES: '/inventory/warehouses',
-    WAREHOUSE_BY_ID: (id: string) => `/inventory/warehouses/${id}`,
-    WAREHOUSE_ZONES: (id: string) => `/inventory/warehouses/${id}/zones`,
-    WAREHOUSE_LOCATIONS: (id: string) => `/inventory/warehouses/${id}/locations`,
-    WAREHOUSE_LAYOUT: (id: string) => `/inventory/warehouses/${id}/layout`,
+    WAREHOUSES: 'inventory/warehouses',
+    WAREHOUSE_BY_ID: (id: string) => `inventory/warehouses/${id}`,
+    WAREHOUSE_ZONES: (id: string) => `inventory/warehouses/${id}/zones`,
+    WAREHOUSE_LOCATIONS: (id: string) => `inventory/warehouses/${id}/locations`,
+    WAREHOUSE_LAYOUT: (id: string) => `inventory/warehouses/${id}/layout`,
     
     // Stock Management
-    STOCK_LEVELS: '/inventory/stock-levels',
-    STOCK_BY_PRODUCT: (productId: string) => `/inventory/stock-levels/product/${productId}`,
-    STOCK_BY_WAREHOUSE: (warehouseId: string) => `/inventory/stock-levels/warehouse/${warehouseId}`,
-    STOCK_SEARCH: '/inventory/stock-levels/search',
-    STOCK_AVAILABILITY: '/inventory/stock-levels/availability',
-    STOCK_VALUATION: '/inventory/stock-levels/valuation',
+    STOCK_LEVELS: 'inventory/stock-levels',
+    STOCK_BY_PRODUCT: (productId: string) => `inventory/stock-levels/product/${productId}`,
+    STOCK_BY_WAREHOUSE: (warehouseId: string) => `inventory/stock-levels/warehouse/${warehouseId}`,
+    STOCK_SEARCH: 'inventory/stock-levels/search',
+    STOCK_AVAILABILITY: 'inventory/stock-levels/availability',
+    STOCK_VALUATION: 'inventory/stock-levels/valuation',
     
     // Stock Movements
-    STOCK_MOVEMENTS: '/inventory/stock-movements',
-    MOVEMENT_BY_ID: (id: string) => `/inventory/stock-movements/${id}`,
-    MOVEMENT_SEARCH: '/inventory/stock-movements/search',
-    MOVEMENT_APPROVE: (id: string) => `/inventory/stock-movements/${id}/approve`,
-    MOVEMENT_CANCEL: (id: string) => `/inventory/stock-movements/${id}/cancel`,
+    STOCK_MOVEMENTS: 'inventory/stock-movements',
+    MOVEMENT_BY_ID: (id: string) => `inventory/stock-movements/${id}`,
+    MOVEMENT_SEARCH: 'inventory/stock-movements/search',
+    MOVEMENT_APPROVE: (id: string) => `inventory/stock-movements/${id}/approve`,
+    MOVEMENT_CANCEL: (id: string) => `inventory/stock-movements/${id}/cancel`,
     
     // Stock Adjustments
-    STOCK_ADJUSTMENTS: '/inventory/stock-adjustments',
-    ADJUSTMENT_BY_ID: (id: string) => `/inventory/stock-adjustments/${id}`,
-    ADJUSTMENT_APPROVE: (id: string) => `/inventory/stock-adjustments/${id}/approve`,
-    ADJUSTMENT_PROCESS: (id: string) => `/inventory/stock-adjustments/${id}/process`,
+    STOCK_ADJUSTMENTS: 'inventory/stock-adjustments',
+    ADJUSTMENT_BY_ID: (id: string) => `inventory/stock-adjustments/${id}`,
+    ADJUSTMENT_APPROVE: (id: string) => `inventory/stock-adjustments/${id}/approve`,
+    ADJUSTMENT_PROCESS: (id: string) => `inventory/stock-adjustments/${id}/process`,
     
     // Stock Transfers
-    STOCK_TRANSFERS: '/inventory/stock-transfers',
-    TRANSFER_BY_ID: (id: string) => `/inventory/stock-transfers/${id}`,
-    TRANSFER_SHIP: (id: string) => `/inventory/stock-transfers/${id}/ship`,
-    TRANSFER_RECEIVE: (id: string) => `/inventory/stock-transfers/${id}/receive`,
+    STOCK_TRANSFERS: 'inventory/stock-transfers',
+    TRANSFER_BY_ID: (id: string) => `inventory/stock-transfers/${id}`,
+    TRANSFER_SHIP: (id: string) => `inventory/stock-transfers/${id}/ship`,
+    TRANSFER_RECEIVE: (id: string) => `inventory/stock-transfers/${id}/receive`,
     
     // Suppliers
-    SUPPLIERS: '/inventory/suppliers',
-    SUPPLIER_BY_ID: (id: string) => `/inventory/suppliers/${id}`,
-    SUPPLIER_PRODUCTS: (id: string) => `/inventory/suppliers/${id}/products`,
-    SUPPLIER_CONTACTS: (id: string) => `/inventory/suppliers/${id}/contacts`,
-    SUPPLIER_SEARCH: '/inventory/suppliers/search',
-    SUPPLIER_PERFORMANCE: (id: string) => `/inventory/suppliers/${id}/performance`,
+    SUPPLIERS: 'inventory/suppliers',
+    SUPPLIER_BY_ID: (id: string) => `inventory/suppliers/${id}`,
+    SUPPLIER_PRODUCTS: (id: string) => `inventory/suppliers/${id}/products`,
+    SUPPLIER_CONTACTS: (id: string) => `inventory/suppliers/${id}/contacts`,
+    SUPPLIER_SEARCH: 'inventory/suppliers/search',
+    SUPPLIER_PERFORMANCE: (id: string) => `inventory/suppliers/${id}/performance`,
     
     // Purchase Orders
-    PURCHASE_ORDERS: '/inventory/purchase-orders',
-    PO_BY_ID: (id: string) => `/inventory/purchase-orders/${id}`,
-    PO_SEARCH: '/inventory/purchase-orders/search',
-    PO_APPROVE: (id: string) => `/inventory/purchase-orders/${id}/approve`,
-    PO_SEND: (id: string) => `/inventory/purchase-orders/${id}/send`,
-    PO_CANCEL: (id: string) => `/inventory/purchase-orders/${id}/cancel`,
-    PO_ACKNOWLEDGE: (id: string) => `/inventory/purchase-orders/${id}/acknowledge`,
+    PURCHASE_ORDERS: 'inventory/purchase-orders',
+    PO_BY_ID: (id: string) => `inventory/purchase-orders/${id}`,
+    PO_SEARCH: 'inventory/purchase-orders/search',
+    PO_APPROVE: (id: string) => `inventory/purchase-orders/${id}/approve`,
+    PO_SEND: (id: string) => `inventory/purchase-orders/${id}/send`,
+    PO_CANCEL: (id: string) => `inventory/purchase-orders/${id}/cancel`,
+    PO_ACKNOWLEDGE: (id: string) => `inventory/purchase-orders/${id}/acknowledge`,
     
     // Goods Receipts
-    GOODS_RECEIPTS: '/inventory/goods-receipts',
-    RECEIPT_BY_ID: (id: string) => `/inventory/goods-receipts/${id}`,
-    RECEIPT_COMPLETE: (id: string) => `/inventory/goods-receipts/${id}/complete`,
+    GOODS_RECEIPTS: 'inventory/goods-receipts',
+    RECEIPT_BY_ID: (id: string) => `inventory/goods-receipts/${id}`,
+    RECEIPT_COMPLETE: (id: string) => `inventory/goods-receipts/${id}/complete`,
     
     // Analytics
-    INVENTORY_ANALYTICS: '/inventory/analytics',
-    SUPPLIER_ANALYTICS: '/inventory/analytics/suppliers',
-    ABC_ANALYSIS: '/inventory/analytics/abc-analysis',
-    STOCK_TURNOVER: '/inventory/analytics/stock-turnover',
-    SLOW_MOVING: '/inventory/analytics/slow-moving',
-    REORDER_REPORT: '/inventory/analytics/reorder-report',
+    INVENTORY_ANALYTICS: 'inventory/analytics',
+    SUPPLIER_ANALYTICS: 'inventory/analytics/suppliers',
+    ABC_ANALYSIS: 'inventory/analytics/abc-analysis',
+    STOCK_TURNOVER: 'inventory/analytics/stock-turnover',
+    SLOW_MOVING: 'inventory/analytics/slow-moving',
+    REORDER_REPORT: 'inventory/analytics/reorder-report',
     
     // Costing
-    COSTING_UPDATE: '/inventory/costing/update',
-    COSTING_RECALCULATE: '/inventory/costing/recalculate',
-    COST_VARIANCE: '/inventory/analytics/cost-variance',
+    COSTING_UPDATE: 'inventory/costing/update',
+    COSTING_RECALCULATE: 'inventory/costing/recalculate',
+    COST_VARIANCE: 'inventory/analytics/cost-variance',
     
     // Alerts and Notifications
-    LOW_STOCK_ALERTS: '/inventory/alerts/low-stock',
-    EXPIRATION_ALERTS: '/inventory/alerts/expiration',
-    REORDER_ALERTS: '/inventory/alerts/reorder',
+    LOW_STOCK_ALERTS: 'inventory/alerts/low-stock',
+    EXPIRATION_ALERTS: 'inventory/alerts/expiration',
+    REORDER_ALERTS: 'inventory/alerts/reorder',
     
     // File uploads
-    UPLOAD_PRODUCT_IMAGE: '/inventory/uploads/product-image',
-    UPLOAD_DOCUMENT: '/inventory/uploads/document',
+    UPLOAD_PRODUCT_IMAGE: 'inventory/uploads/product-image',
+    UPLOAD_DOCUMENT: 'inventory/uploads/document',
     
     // Integrations
-    BARCODE_LOOKUP: '/inventory/barcode/lookup',
-    BARCODE_GENERATE: '/inventory/barcode/generate',
+    BARCODE_LOOKUP: 'inventory/barcode/lookup',
+    BARCODE_GENERATE: 'inventory/barcode/generate',
     
     // Bulk operations
-    BULK_UPDATE_STOCK: '/inventory/bulk/update-stock',
-    BULK_ADJUST_PRICES: '/inventory/bulk/adjust-prices',
-    BULK_IMPORT: '/inventory/bulk/import',
+    BULK_UPDATE_STOCK: 'inventory/bulk/update-stock',
+    BULK_ADJUST_PRICES: 'inventory/bulk/adjust-prices',
+    BULK_IMPORT: 'inventory/bulk/import',
     
     // Reporting
-    INVENTORY_REPORT: '/inventory/reports/inventory',
-    MOVEMENT_REPORT: '/inventory/reports/movements',
-    SUPPLIER_REPORT: '/inventory/reports/suppliers',
-    EXPORT_REPORT: (type: string) => `/inventory/reports/${type}/export`
+    INVENTORY_REPORT: 'inventory/reports/inventory',
+    MOVEMENT_REPORT: 'inventory/reports/movements',
+    SUPPLIER_REPORT: 'inventory/reports/suppliers',
+    EXPORT_REPORT: (type: string) => `inventory/reports/${type}/export`
   } as const
 
   // Product Management
